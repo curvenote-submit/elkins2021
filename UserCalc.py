@@ -20,10 +20,10 @@ def plot_inputs(df,figsize=(8,6)):
     ax1.grid()
     ax1.set_xticks(xticks,minor=True)
     ax2.plot(df['Kr'],df['P'])
-    ax2.set_xlabel('Kr')
+    ax2.set_xlabel(r'$K_r$')
     for s in ['DU','DTh','DRa','DPa']:
         ax3.semilogx(df[s],df['P'],label=s)
-    ax3.set_xlabel('Ds')
+    ax3.set_xlabel(r'$D_i$')
     ax3.legend(loc='best',bbox_to_anchor=(1.1,1))
 
 def plot_1Dcolumn(df,figsize=(8,6)):
@@ -50,7 +50,7 @@ def plot_1Dcolumn(df,figsize=(8,6)):
     ax2.legend(loc='best',bbox_to_anchor=(1.1,1))
     return fig,(ax1,ax1a,ax2)
 
-def plot_contours(phi0,W0,act,figsize=(12,12)):
+def plot_contours(phi0,W0,act,figsize=(10,12)):
     '''
     pretty plot activity contour plots
     '''
@@ -67,19 +67,19 @@ def plot_contours(phi0,W0,act,figsize=(12,12)):
         cf = plt.contourf(phi0,W0,act[0])
         plt.xscale('log')
         plt.yscale('log')
-        plt.xlabel('Porosity ($\phi_0$)')
+        plt.xlabel('Porosity ($\phi$)')
         plt.ylabel('Upwelling Rate (cm/yr)')
         plt.gca().set_aspect('auto')
         plt.title(labels[0])
         plt.colorbar(cf, ax=plt.gca(), orientation='horizontal',shrink=1.)
     else:
-        fig, axes = plt.subplots(1,Nplots,sharey=True,figsize=figsize)
+        fig, axes = plt.subplots(Nplots,1,sharey=True,figsize=(10,24))
         for i,ax in enumerate(axes):
             cf = ax.contourf(phi0,W0,act[i])
             ax.set_xscale('log')
             ax.set_yscale('log')
             ax.set_aspect('auto')
-            ax.set_xlabel('Porosity ($\phi_0$)')
+            ax.set_xlabel('Porosity ($\phi$)')
             ax.set_ylabel('Upwelling Rate (cm/yr)')
             ax.set_title(labels[i])
             fig.colorbar(cf, ax=ax, orientation='horizontal',shrink=1.)
@@ -95,7 +95,7 @@ def plot_mesh_Ra(Th,Ra,W0,phi0,figsize=(12,12)):
     for n in range(nphi):
         plt.plot(Th.T[n],Ra.T[n],label='$\phi$ = {}'.format(phi0[n]))
 
-    plt.legend(loc='best',bbox_to_anchor=(2,1))
+    plt.legend(loc='upper left',bbox_to_anchor=(0,-0.3))
     plt.axis([0.9,2.0,0.7,10.0])
     plt.grid()
     plt.xlabel('($^{230}$Th/$^{238}$U)')
@@ -113,7 +113,7 @@ def plot_mesh_Pa(Th,Pa,W0,phi0,figsize=(12,12)):
     for n in range(nphi):
         plt.plot(Th.T[n],Pa.T[n],label='$\phi$ = {}'.format(phi0[n]))
 
-    plt.legend(loc='best',bbox_to_anchor=(2,1))
+    plt.legend(loc='upper left',bbox_to_anchor=(0,-0.3))
     plt.axis([0.9,2.0,0.7,10.0])
     plt.grid()
     plt.xlabel('($^{230}$Th/$^{238}$U)')
@@ -276,7 +276,7 @@ class UserCalc:
         # scaled decay constants and initial partition coefficients
         lambdap = self.h*lambdas/self.W0
 
-        us = self.model(alpha0,lambdap,D,self.W0,self.F,self.dFdz,self.phi,self.rho_f,self.rho_s)
+        us = self.model(alpha0,lambdap,D,self.F,self.dFdz,self.phi,self.rho_f,self.rho_s)
 
         D0 = self.get_D0(D)
         z, Us, Uf = us.solve(z_eval)
@@ -285,7 +285,7 @@ class UserCalc:
         act =  [ alpha0[i]/D0[i]*np.exp(Uf[i]) for i in range(len(D0)) ]
         return z, act, Us, Uf
 
-    def solve_all_1D(self,phi0 ,n , W0, alphas = np.ones(4), z_eval = None):
+    def solve_all_1D(self,phi0 ,n , W0, alphas = np.ones(5), z_eval = None):
         '''
         Sets up and solves the 1-D column model for a given phi0,n, and upwelling rate W0 (in cm/yr).
         Solves for both the U238 decay chain and the U235 decay chain.
@@ -298,11 +298,15 @@ class UserCalc:
         if z_eval is None:
             z_eval = self.zp(self.df['P'])
 
+        # set initial alpha values for [ 238U, 230Th, 226Ra] and [ 235U, 231Pa ]
+        self.alphas_238 = alphas[0:3]
+        self.alphas_235 = alphas[3:5]
+
         # solve for the U238 model
-        z238, a238, Us238, Uf238 = self.solve_1D(self.D_238, self.lambdas_238, z_eval = z_eval)
+        z238, a238, Us238, Uf238 = self.solve_1D(self.D_238, self.lambdas_238, self.alphas_238, z_eval = z_eval)
 
         # solve for the U235 model
-        z235, a235, Us235, Uf235 = self.solve_1D(self.D_235, self.lambdas_235, z_eval = z_eval)
+        z235, a235, Us235, Uf235 = self.solve_1D(self.D_235, self.lambdas_235, self.alphas_235, z_eval = z_eval)
 
         # start building output dataframe
         z = z_eval
