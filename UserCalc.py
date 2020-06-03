@@ -50,7 +50,7 @@ def plot_1Dcolumn(df,figsize=(8,6)):
     ax2.legend(loc='best',bbox_to_anchor=(1.1,1))
     return fig,(ax1,ax1a,ax2)
 
-def plot_contours(phi0,W0,act,figsize=(10,12)):
+def plot_contours(phi0,W0,act,figsize=(12,12)):
     '''
     pretty plot activity contour plots
     '''
@@ -276,7 +276,7 @@ class UserCalc:
         # scaled decay constants and initial partition coefficients
         lambdap = self.h*lambdas/self.W0
 
-        us = self.model(alpha0,lambdap,D,self.F,self.dFdz,self.phi,self.rho_f,self.rho_s)
+        us = self.model(alpha0,lambdap,D,self.W0,self.F,self.dFdz,self.phi,self.rho_f,self.rho_s)
 
         D0 = self.get_D0(D)
         z, Us, Uf = us.solve(z_eval)
@@ -285,7 +285,7 @@ class UserCalc:
         act =  [ alpha0[i]/D0[i]*np.exp(Uf[i]) for i in range(len(D0)) ]
         return z, act, Us, Uf
 
-    def solve_all_1D(self,phi0 ,n , W0, alphas = np.ones(5), z_eval = None):
+    def solve_all_1D(self,phi0 ,n , W0, alphas = np.ones(4), z_eval = None):
         '''
         Sets up and solves the 1-D column model for a given phi0,n, and upwelling rate W0 (in cm/yr).
         Solves for both the U238 decay chain and the U235 decay chain.
