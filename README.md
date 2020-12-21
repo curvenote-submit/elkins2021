@@ -11,6 +11,6 @@ in basalts during decompression partial melting.
 *  `data`: directory containing input .csv files
 
 #### Additional materials
--
+
 * `pyUserCalc-v3.1.ipynb`: Simplified version of the manuscript notebook intended for production work with the model.
 * `latex`: directory containing latex version and formatted pdf of the manuscript notebook for publication
