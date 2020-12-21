@@ -1,0 +1,1925 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \usepackage{authblk}
+    \title{pyUserCalc: A revised Jupyter notebook calculator for uranium-series disequilibria in basalts}
+    \author[1]{Elkins, Lynne J.}
+    \author[2]{Spiegelman, Marc}
+    \affil[1]{University of Nebraska-Lincoln, Lincoln, NE, USA, lelkins@unl.edu}
+    \affil[2]{Lamont-Doherty Earth Observatory of Columbia University, Palisades, NY, USA, mspieg@ldeo.columbia.edu}
+    \date{}
+    \setcounter{Maxaffil}{0}
+    \renewcommand\Affilfont{\itshape\small}
+    
+    \usepackage{pagecolor,lipsum}
+    
+    \usepackage{lineno}
+    \linenumbers
+ 
+    \usepackage{caption}   
+    
+    \usepackage{xcolor} 
+    \usepackage{listings}
+    
+    \lstdefinestyle{mystyle}{
+    commentstyle=\color{gray},
+    keywordstyle=\color{purple},
+    numberstyle=\tiny\color{gray},
+    basicstyle=\footnotesize,
+    keepspaces=true,
+    numbersep=5pt,
+    moredelim=**[s][\color{purple}]{```}{```}
+}
+
+\lstset{language=Python,style=mystyle}  
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+
+\pagecolor{white}
+    
+    \maketitle
+    
+    
+    
+    \hypertarget{abstract}{%
+\begin{abstract}\label{abstract}}
+Meaningful analysis of uranium-series isotopic disequilibria in basaltic lavas relies on the use of complex forward numerical models like dynamic melting (McKenzie, 1985) and equilibrium porous flow (Spiegelman and Elliott, 1993). Historically, such models have either been solved analytically for simplified scenarios, such as constant melting rate or constant solid/melt trace element partitioning throughout the melting process, or have relied on incremental or numerical calculators with limited power to solve problems and/or restricted availability. The most public numerical solution to reactive porous flow, UserCalc (Spiegelman, 2000) was maintained on a private institutional server for nearly two decades, but that approach has been unsustainable in light of modern security concerns. Here we present a more long-lasting solution to the problems of availability, model sophistication and flexibility, and long-term access in the form of a cloud-hosted, publicly available Jupyter notebook. Similar to UserCalc, the new notebook calculates U-series disequilibria during time-dependent, equilibrium partial melting in a one-dimensional porous flow regime where mass is conserved. In addition, we also provide a new disequilibrium transport model which has the same melt transport model as UserCalc, but approximates rate-limited diffusive exchange of nuclides between solid and melt using linear kinetics. The degree of disequilibrium during transport is controlled by a Damköhler number, allowing  the full spectrum of equilibration models from complete fractional melting ($Da=0$) to equilibrium transport ($Da=\infty$).  
+\end{abstract}
+
+
+    \hypertarget{key-points}{%
+\section*{Key Points}\label{key-points}}
+
+• Cloud-based Jupyter notebook presents an open source, reproducible
+tool for modeling U-series in basalts
+
+• Equilibrium and pure disequilibrium porous flow U-series models with
+1D conservation of mass
+
+• Scaled porous flow model introduces incomplete equilibrium scenario
+with reaction rate limitations
+
+
+
+    \hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Continuous forward melting models are necessary to interpret the origins of empirically-measured U-series isotopic disequilibria in basaltic lavas, but the limited and unreliable availability of reproducible tools for making such calculations remains a persistent problem for geochemists. To date, a number of models have been developed for this task, including classical dynamic melting after McKenzie (1985) and the reactive porous flow model of Spiegelman and Elliott (1993). There have since been numerous approaches to using both the dynamic and porous flow models that range from simplified analytical solutions (e.g., Sims et al., 1999; Zou, 1998; Zou and Zindler, 2000) to incremental dynamic melting calculators (Stracke et al., 2003), two-porosity calculators (Jull et al., 2002; Lundstrom et al., 2000; Sims et al., 2002), and one-dimensional numerical solutions to reactive porous flow (Spiegelman, 2000) and dynamic melting (Bourdon et al., 2005; Elkins et al., 2019). Unfortunately, some of the approaches published since 1990 lacked publicly available tools that would permit others to directly apply the authors’ methods, and while the more simplified and incremental approaches remain appropriate for asking and approaching some questions, they are insufficient for other applications that require more complex approaches (e.g., two-lithology melting; Elkins et al., 2019). Other tools like UserCalc that were available to public users (Spiegelman, 2000) were limited in application and have since become unavailable.
+
+In light of the need for more broadly accessible and flexible solutions to U-series disequilibrium problems in partial melting, here we present a cloud-server hosted, publicly available numerical calculator for one-dimensional, decompression partial melting. The tool is provided in a Jupyter notebook with importable Python code and can be accessed from a web browser. Users will be able to access and use the tool using a free cloud server account, or on their own computer given any standard Python distribution. As shown below, the notebook is structured to permit the user to select one of two primary model versions, either classical reactive porous flow after Spiegelman and Elliott (1993) and Spiegelman (2000), or a new disequilibrium transport model, developed after the appendix formulas of Spiegelman and Elliott (1993). The new model ranges from pure disequilibrium porous flow transport (i.e., the mass-conserved equivalent of true fractional melting over time) to a "scaled" disequilibrium scenario, where the degree of chemical equilibrium that is reached is determined by the relationship between the rate of chemical reaction and the solid decompression rate (which is, in turn, related to the overall melting rate), in the form of a Damköhler number.
+
+This scaled disequilibrium model resembles the classic dynamic melting model of McKenzie (1985), with the caveat that ours is the first U-series melting model developed for near-fractional, disequilibrium transport where mass is also conserved within a one-dimensional melting regime. That is, rather than controlling the quantity of melt that remains in equilibrium with the solid using a fixed residual porosity, the melt porosity is controlled by Darcy's Law and mass conservation constraints after Spiegelman and Elliott (1993), and the "near-fractional" scenario is simulated using the reaction rate of the migrating liquid with the upwelling solid matrix.
+
+    \hypertarget{calculating-u-series-in-basalts-during-mass-conserved-one-dimensional-porous-flow}{%
+\section{Calculating U-series in basalts during mass-conserved, one-dimensional porous flow}\label{calculating-u-series-in-basalts-during-mass-conserved-one-dimensional-porous-flow}}
+
+\hypertarget{solving-for-equilibrium-transport}{%
+\subsection{Solving for equilibrium transport}\label{solving-for-equilibrium-transport}}
+
+Here we consider several forward melting models that  calculate the concentrations and activities of U-series isotopes ($^{238}$U, $^{230}$Th, $^{226}$Ra, $^{235}$U, and $^{231}$Pa) during  partial melting and melt transport due to  adiabatic mantle decompression. Following Spiegelman and Elliott (1993), we start with conservation of mass equations for the concentration of a nuclide $i$, assuming chemical equilibrium between melt and solid:
+
+\begin{equation}\label{eq:1}
+    \begin{aligned}
+        \frac{\partial}{\partial t}[\rho_{f} \phi + \rho_{s}(1-\phi)D_i]c_{i}^f + \nabla \cdot [\rho_f \phi v + \rho_s (1 - \phi) D_i V] c_i^f = \lambda_{i-1}[\rho_f \phi + \rho_s (1-\phi) D_{i-1}]c_{i-1}^f \\
+        - \lambda_{i}[\rho_f \phi + \rho_s (1-\phi) D_{i}]c_{i}^f
+    \end{aligned}
+\end{equation}
+
+where $t$ is time, $c_i^f$ is the concentration of nuclide $i$ in the melt, $D_i$ is the bulk solid/liquid partition coefficient for nuclide $i$, $\rho_f$ is the density of the fluid and $\rho_s$ is the density of the solid, $\phi$ is the maximum residual melt porosity, $v$ is the velocity of the melt and $V$ the velocity of the solid in three dimensions, $\lambda_i$ is the decay constant of nuclide $i$, and $(i-1)$ indicates the radioactive parent of nuclide $i$. Equation (\ref{eq:1}) states that the change in total mass of nuclide $i$ in both the melt and the solid is controlled by the divergence of the mass flux transported by both phases and by the radioactive decay of both parent and daughter nuclides (i.e., the right hand side of the equation above).
+
+The equilibrium model of Spiegelman and Elliott (1993) assumes complete chemical equilibrium is maintained between the migrating partial melt and the solid rock matrix along a decompressing one-dimensional column. To close the equations, they assume that melt transport is described by a simplified form of Darcy’s Law for permeable flow through the solid matrix. In one dimension, for a steady-state upwelling column of melting mantle rocks, they defined the one-dimensional melt and solid velocities ($w$ and $W$, respectively), and expressed the melt and solid fluxes as functions of height ($z$) in terms of a constant melting rate $\Gamma_0$:
+
+\begin{equation}
+    \rho_f \phi w = \Gamma_0 z\label{eq:2}
+\end{equation}
+
+\begin{equation}
+    \rho_s (1 - \phi) W = \rho_s W_0 - \Gamma_0 z\label{eq:3}
+\end{equation}
+
+where $W_0$ is the solid mantle upwelling rate, and $\Gamma_0$ is equivalent to $\rho_s W_0 F_{max}$ divided by the depth $d$ for a maximum degree of melting $F_{max}$.
+
+Assuming an initial condition of secular equilibrium, where the initial activities $\lambda_i c_{i,0}^f D_i$ are equivalent for parent and daughter nuclides, they derived a system of differential equations for the concentration $c_i^f$ in any decay chain, which can be solved numerically using equation (10) from that paper:
+
+\begin{equation}
+    \frac{dc_i'}{d\zeta} = c_i' \frac{(D_i-1)F_{max}}{D_i + (1-D_i)F_{max} \zeta} + \lambda_i d\left[ \frac{D_i[D_{i-1}+(1-D_{i-1})F_{max}\zeta]}{D_{i-1}[D_i + (1-D_i)F_{max}\zeta]} \frac{c_{i-1}'}{w_{eff}^{i-1}} - \frac{c_i'}{w_{eff}^i}\right]\label{eq:4}
+\end{equation}
+
+where $c_i'$ is the scaled melt concentration $(= c_i^f/c_{i,0}^f)$, $\zeta$ is the dimensionless fractional height in the scaled column, equal to 0 at the base and 1 at the top, and
+
+\begin{equation}
+    w_{eff}^i = \frac{\rho_f \phi w + \rho_s(1-\phi)D_i W}{\rho_f \phi + \rho_s(1-\phi)D_i}\label{eq:5}
+\end{equation}
+
+is the effective velocity for element $i$.
+
+In their appendix, Spiegelman and Elliott (1993) developed the more general (and, arguably, realistic) form where $\Gamma$ and $D_i$ are functions of height $z$. The UserCalc model of Spiegelman (2000) then formulated a one-dimensional numerical integration for the concentrations of selected U-series isotopes in continuously produced partial melts with height $z$, after the equilibrium formulas above. The concentration expression derived by Spiegelman (2000) for the equilibrium scenario (formula 6 in that reference) is:
+
+\begin{equation}
+    \frac{dc_i^f}{dz} = \frac{-c_i^f(z)}{F(z) + (1 - F(z)) D_i(z)} \frac{d}{dz} [F(z) + (1 - F(z)) D_i(z)] + \frac{\lambda_{i-1}\overline{\rho D_{i-1}} c_{i-1}^f(z) - \lambda_{i}\overline{\rho D_{i}} c_{i}^f(z)}{\rho_s W_0 [F(z) + (1 - F(z)) D_i(z)]}\label{eq:6}
+\end{equation}
+
+where $F$ is the degree of melting. Spiegelman (2000) further observed that solving for the natural log of the concentrations, $U_i$, rather than the concentrations themselves, is more accurate, particularly for highly incompatible elements (formulas 7-9 in that reference):
+
+\begin{equation}
+    U_i^f = \ln\left(\frac{c_i^f}{c_{i,0}^f}\right)\label{eq:7}
+\end{equation}
+
+\begin{equation}
+    \frac{dU_i^f}{dz} = \frac{1}{c_i^f(z)} \frac{dc_i^f}{dz}\label{eq:8}
+\end{equation}
+
+\begin{equation}
+    \frac{dU_i^f}{dz} = \frac{-1}{F(z) + (1 - F(z)) D_i(z)} \frac{d}{dz} [F(z) + (1-F(z))D_i(z)] + \frac{\lambda_i}{w_{eff}^i} [R_i^{i-1} \exp[U_{i-1}^f(z)-U_i^f(z)]-1]\label{eq:9}
+\end{equation}
+
+For the formulas above, Spiegelman (2000) defined a series of variables that allow for simpler integration formulas and aid in efficient solution of the model, namely
+
+\begin{equation}
+    \overline{\rho D_i} = \rho_f \phi + \rho_s (1-\phi)D_i(z) ,\label{eq:10}
+\end{equation}
+
+\begin{equation}
+    \overline{F} = F(z) + (1-F(z)) D_i(z) ,\label{eq:11}
+\end{equation}
+
+\begin{equation}
+    R_i^{i-1} = \alpha_i \frac{D_i^0}{D_{i-1}^0} \frac{\overline{\rho D_{i-1}}}{\overline{\rho D_i}} ,\label{eq:12}
+\end{equation}
+
+\begin{equation}
+    \alpha_i = \frac{\lambda_{i-1} c_{(i-1),0}^s}{\lambda_i c_{i,0}^s} ,\label{eq:13}
+\end{equation}
+
+and substituting from the formulas above
+
+\begin{equation}
+    w_{eff}^i = \frac{\rho_s W_0 \overline{F}}{\overline{\rho D_i}} .\label{eq:14}
+\end{equation}
+
+where $D_i^0$ is the initial bulk solid/melt partition coefficient for element $i$, $R_i^{i-1}$ is the ingrowth factor, and $\alpha$ is the initial degree of secular disequilibrium in the unmelted solid.
+
+$U_i(z) = \ln(c_f(z)/c_f^0)$, the log of the total concentration of nuclide $i$ in the melt, can then be decomposed into
+
+\begin{equation}
+  U_i(z) = U^{stable}_i(z) + U^{rad}_i(z)\label{eq:15}
+\end{equation}
+
+where
+
+\begin{equation}
+    U^{stable}_i(z) = \ln\left[ \frac{D_i^0}{\overline{F}D_i(z)}\right]\label{eq:16}
+\end{equation}
+
+is the log concentration of a stable nuclide with the same partition coefficients, and $U^{rad}_i(z)$ is the radiogenic ingrowth component. An alternate way of writing the radiogenic ingrowth component of equation (9) of Spiegelman (2000) is:
+
+\begin{equation}
+    \frac{dU_i^{rad}}{dz} = \lambda'_i\frac{\overline{\rho D_{i}}}{\overline{F D_{i}}}\left[R_i^{i-1}\exp[U_{i-1}(z)-U_i(z)] - 1\right]\label{eq:17}
+\end{equation}
+
+where
+
+\begin{equation}
+    \lambda'_i = \frac{h\lambda_i}{W_0}\label{eq:18}
+\end{equation}
+
+is the decay constant of nuclide $i$, scaled by the solid transport time ($h/W_0$) across a layer of total height $h$.
+
+Using these equations, the UserCalc reactive porous flow calculator accepted user inputs for both $F(z)$ and $D_i(z)$. The method uses a formula for the melt porosity ($\phi(z)$) based on a Darcy’s Law expression with a scaled permeability factor (formula 20 from Spiegelman (2000)):
+
+\begin{equation}
+    K_r(z)A_d \phi^n (1-\phi)^2 + \phi [1 + F(z) (\frac{\rho_s}{\rho_f} - 1)] - \frac{\rho_s}{\rho_f}F(z) = 0\label{eq:19}
+\end{equation}
+
+where $K_r(z)$ is the scaled permeability with height $z$, $A_d$ is a permeability calibration function, and $n$ is the permeability exponent. The scaled permeability is calculated relative to the permeability at the top of the column, i.e. depth $z=z_{final}$:
+
+\begin{equation}
+K_r(z) = \frac{k(z)}{k(z_{final})}\label{eq:20}
+\end{equation}
+
+Our model implementation reproduces and builds on the prior efforts summarized above, using a readily accessible computer language (Python) and web application (Jupyter notebooks).
+
+    \hypertarget{solving-for-complete-disequilibrium-transport}{%
+\subsection{Solving for complete disequilibrium transport}\label{solving-for-complete-disequilibrium-transport}}
+
+We further present a calculation tool that solves a similar set of equations for pure chemical disequilibrium  transport during one-dimensional decompression melting. This model assumes that the solid produces an instantantaneous fractional melt in local equilibrium with the solid; however, the melt is not allowed to back-react with the solid during transport, as it would in the equilibrium model above. In the limiting condition defined by stable trace elements (i.e., without radioactive decay), the model reduces to the calculation for an accumulated fractional melt. The model solves for the concentration of each nuclide $i$ in the solid $(s)$ and liquid $(f)$ using equations (26) and (27) of Spiegelman and Elliott (1993):
+
+\begin{equation}
+    \frac{dc_i^s}{dz} = \frac{c_i^s(z) (1 - \frac{1}{D_i(z)})}{1-F(z)} \frac{dF}{dz} + \frac{1-\phi}{W_0(1-F(z))} [\lambda_{i-1} c_{i-1}^s(z) - \lambda_i c_i^s(z)]\label{eq:21}
+\end{equation}
+
+\begin{equation}
+    \frac{dc_i^f}{dz} = \frac{\frac{c_i^s(z)}{D_i(z)}-c_i^f(z)}{F(z)} \frac{dF}{dz} + \frac{\rho_f \phi}{\rho_s W_0 F(z)} [\lambda_{i-1} c_{i-1}^f(z) - \lambda_i c_i^f(z)]\label{eq:22}
+\end{equation}
+
+which maintain conservation of mass for both fluid and solid individually, and do not assume chemical equilibration between the two phases.
+
+As above, the solid and fluid concentration equations are rewritten in terms of the logs of the concentrations:
+
+\begin{equation}
+    U^s_i(z) = \ln\left(\frac{c_i^{s}(z)}{c_{i,0}^s}\right),  \quad U^f_i(z) = \ln\left(\frac{c_i^{f}(z)}{c_{i,0}^f}\right)\label{eq:23}
+\end{equation}
+
+and thus
+
+\begin{equation}
+    \frac{dU_i}{dz} = \frac{1}{c_i(z)} \frac{dc_i}{dz}\label{eq:24}
+\end{equation}
+
+We assume that initial $c_{i,0}^s = D_{i,0} c_{i,0}^f$. Also as above, the log concentration equations can be broken into stable and radiogenic components, and the stable log concentration equations are:
+
+\begin{equation}
+    \frac{dU_{i}^{s,stable}}{dz} = \frac{1-\frac{1}{D_i(z)}}{1-F(z)} \frac{dF}{dz}\label{eq:25}
+\end{equation}
+
+\begin{equation}
+    \frac{dU_{i}^{f,stable}}{dz} = \frac{\frac{D_i^0}{D_i(z)} \exp(U_i^s-U_i^f)}{F(z)}\label{eq:26}
+\end{equation}
+
+Reincorporating this with the radiogenic component gives:
+
+\begin{equation}
+    \frac{dU_{i}^{s}}{dz} = \frac{1-\frac{1}{D_i(z)}}{1-F(z)} \frac{dF}{dz} + \frac{1-\phi}{1-F(z)}\lambda_i \left[\frac{\alpha_{i-1}}{\alpha_i} \exp[U_{i-1}^s - U_i^s]-1\right]\label{eq:27}
+\end{equation}
+
+\begin{equation}
+    \frac{dU_{i}^{f}}{dz} = \frac{\frac{D_i^0}{D_i(z)} \exp(U_i^s-U_i^f)}{F(z)} + \frac{\rho_f \phi}{\rho_s F}\lambda_i \left[\frac{D_i^0 \alpha_{i-1}}{D_{i-1}^0 \alpha_i} \exp[U_{i-1}^f - U_i^f]-1\right]\label{eq:28}
+\end{equation}
+
+    \hypertarget{solving-for-transport-with-chemical-reactivity-rates}{%
+\subsection{Solving for transport with chemical reactivity rates}\label{solving-for-transport-with-chemical-reactivity-rates}}
+
+The two models described above are end members for complete equilibrium and complete disequilibrium transport. For stable trace elements, these models produce melt compositions that are equivalent to batch melting and accumulated fractional melting (e.g., Spiegelman and Elliott, 1993). However, the actual transport of a reactive fluid (like a melt) through a solid matrix can fall anywhere between these end members depending on the rate of transport and re-equilibration between melt and solid, which can be sensitive to the mesoscopic geometry of melt and solid (e.g., Spiegelman and Kenyon, 1992). In an intermediate scenario, we envision that some reaction occurs, but chemical equilibration is incomplete due to slow reaction rates relative to the differential transport rates for the fluid and solid. If reaction times are sufficiently rapid to achieve chemical exchange over the lengthscale of interest before the liquid segregates, chemical equilibrium can be achieved; but for reactions that occur more slowly than effective transport rates, something less than full equilibrium occurs (e.g., Grose and Afonso, 2019; Iwamori, 1993, 1994; Kogiso et al., 2004; Liang and Liu, 2016; Peate and Hawkesworth, 2005; Qin et al., 1992). Such reaction rates can include, for example, the rate of chemical migration over the distance between high porosity veins or channels (e.g., Aharonov et al., 1995; Jull et al., 2002; Spiegelman et al., 2001; Stracke and Bourdon, 2009); or, at the grain scale, the solid chemical diffusivity of elements over the diameter of individual mineral grains (e.g., Feineman and DePaolo, 2003; Grose and Afonso, 2019; Oliveira et al., 2020; Van Orman et al., 2002a, 2006).
+
+To model this scaled reactivity scenario, here we start with our equations for disequilibrium transport in a steady-state, one-dimensional conservative system, and add a chemical back-reaction term that permits exchange of elements between the fluid and the solid. The reaction term is scaled by a reactivity rate factor, $\Re$ and expressed in kg/m$^3$/yr. (i.e., the same units as the melting rate).
+
+First, returning to the conservation of mass equations for a steady-state, one-dimensional, reactive system of stable trace elements, and using $\Gamma(z)$ to represent the melting rate:
+
+\begin{equation}
+    \frac{d}{dz} \rho_f \phi w = \Gamma(z)\label{eq:29}
+\end{equation}
+
+\begin{equation}
+    \frac{d}{dz} \rho_s (1-\phi) W = -\Gamma(z)\label{eq:30}
+\end{equation}
+
+\begin{equation}
+    \frac{d}{dz} \rho_f \phi w c_i^f(z) = \frac{c_i^s(z)}{D_i(z)}\Gamma(z) - \Re\left(c_i^f(z) - \frac{c_i^s(z)}{D_i(z)}\right)\label{eq:31}
+\end{equation}
+
+\begin{equation}
+    \frac{d}{dz} \rho_s (1-\phi) W c_i^s(z) = -\frac{c_i^s(z)}{D_i(z)}\Gamma(z) + \Re\left(c_i^f(z) - \frac{c_i^s(z)}{D_i(z)}\right)\label{eq:32}
+\end{equation}
+
+where, for an adiabatic upwelling column,
+
+\begin{equation}
+    \Gamma(z) = \rho_s W_0 \frac{dF}{dz}\label{eq:33}
+\end{equation}
+
+From this, the equations (\ref{eq:29}) and (\ref{eq:30}) can be integrated (with appropriate boundary conditions at $z=0$) to give
+
+\begin{equation}
+    \rho_f \phi w = \rho_s W_0 F(z)\label{eq:34}
+\end{equation}
+
+\begin{equation}
+    \rho_s (1-\phi) W = \rho_s W_0 (1 - F(z))\label{eq:35}
+\end{equation}
+
+Next, we expand the concentration equations to include the reactivity factor, and substitute the conservation of total mass determined above:
+
+\begin{equation}
+    \rho_s W_0 F(z)\frac{d}{dz} c_i^f(z) + c_i^f(z)\Gamma(z) = \frac{c_i^s(z)}{D_i(z)}\Gamma(z) -\Re\left(c_i^f(z) - \frac{c_i^s(z)}{D_i(z)}\right)\label{eq:36}
+\end{equation}
+
+\begin{equation}
+    \rho_s W_0 (1 - F(z))\frac{d}{dz}c_i^s(z) - c_i^s(z)\Gamma(z) = -\frac{c_i^s(z)}{D_i(z)}\Gamma(z) + \Re\left(c_i^f(z) - \frac{c_i^s(z)}{D_i(z)}\right)\label{eq:37}
+\end{equation}
+
+If we then combine the $\Gamma(z)$ terms and rearrange:
+
+\begin{equation}
+    \rho_s W_0 F(z)\frac{d}{dz} c_i^f(z) = \Gamma(z)\left(\frac{c_i^s(z)}{D_i(z)} - c_i^f(z)\right) - \Re\left(c_i^f(z) - \frac{c_i^s(z)}{D_i(z)}\right)\label{eq:38}
+\end{equation}
+
+\begin{equation}
+    \rho_s W_0 (1 - F(z))\frac{d}{dz}c_i^s(z) = \Gamma(z) c_i^s(z)\left(1 - \frac{1}{D_i(z)}\right)+ \Re\left(c_i^f(z) - \frac{c_i^s(z)}{D_i(z)}\right)\label{eq:39}
+\end{equation}
+
+We can now divide the fluid and solid equations by $c_i^f$ and $c_i^s$, respectively, and rearrange the $W_0$ terms:
+
+\begin{equation}
+    \frac{1}{c_i^f(z)}\frac{dc_i^f}{dz} = \frac{1}{\rho_s W_0 F(z)}\left[\Gamma(z)\left(\frac{c_i^s(z)}{D_i(z) c_i^f(z)} - 1\right) - \Re\left(1 - \frac{c_i^s(z)}{D_i(z) c_i^f(z)}\right)\right]\label{eq:40}
+\end{equation}
+
+\begin{equation}
+    \frac{1}{c_i^s(z)}\frac{dc_i^s}{dz} = \frac{1}{\rho_s W_0 (1 - F(z))}\left[\Gamma(z) \left(1 - \frac{1}{D_i(z)}\right)+ \frac{\Re}{D_i(z)}\left(\frac{D_i(z) c_i^f(z)}{c_i^s(z)} - 1\right) \right]\label{eq:41}
+\end{equation}
+
+The first terms on the right-hand side of each of these equations are identical to pure disequilibrium melting, such that if $\Re$ is zero, the equations reduce to the disequilibrium transport case of Spiegelman and Elliott (1993).
+
+To solve, the final terms that involve the reactivity factor can be further rewritten using the definitions for $U_i^f$ and $U_i^s$:
+
+\begin{equation}
+    c_i^f(z) = c_{i,0}^f \exp[U_i^f(z)] = \frac{c_{i,0}^s}{D_i^0} \exp[U_i^f(z)]\label{eq:42}
+\end{equation}
+
+\begin{equation}
+    c_i^s(z) = c_{i,0}^s \exp[U_i^s(z)]\label{eq:43}
+\end{equation}
+
+Thus:
+
+\begin{equation}
+    \frac{D_i(z) c_i^f(z)}{c_i^s(z)} = \frac{D_i(z)}{D_i^0} \exp[U_i^f(z) - U_i^s(z)]\label{eq:44}
+\end{equation}
+
+\begin{equation}
+    \frac{c_i^s(z)}{D_i(z) c_i^f(z)} = \frac{D_i^0}{D_i(z)} \exp[U_i^s(z) - U_i^f(z)]\label{eq:45}
+\end{equation}
+
+and:
+
+\begin{equation}
+    \frac{dU_i^f}{dz} = \frac{1}{\rho_s W_0 F(z)}\left[\Gamma(z)\left(\frac{D_i^0}{D_i(z)} \exp[U_i^s(z) - U_i^f(z)] - 1\right) - \Re\left(1 - \frac{D_i^0}{D_i(z)} \exp[U_i^s(z) - U_i^f(z)]\right)\right]\label{eq:46}
+\end{equation}
+
+\begin{equation}
+    \frac{dU_i^s}{dz} = \frac{1}{\rho_s W_0 (1 - F(z))}\left[\Gamma(z) \left(1 - \frac{1}{D_i(z)}\right)+ \frac{\Re}{D_i(z)}\left(\frac{D_i(z)}{D_i^0} \exp[U_i^f(z) - U_i^s(z)] - 1\right) \right]\label{eq:47}
+\end{equation}
+
+Finally, substituting adiabatic upwelling and scaling with depth in place of $\Gamma(z)$, and adding radioactive terms gives the full solutions for $dU_i/dz$:
+
+\begin{equation}\label{eq:48}
+    \begin{aligned}
+    	\frac{dU_i^f}{dz} = \frac{1}{F(z)}\left[\frac{dF}{dz}\left(\frac{D_i^0}{D_i(z)}\exp[U_i^s(z) - U_i^f(z)] - 1\right)\right] - \frac{\Re h}{\rho_s W_0 F(z)}\left[1 - \frac{D_i^0}{D_i(z)}\exp[U_i^s(z) - U_i^f(z)]\right] \\
+	+ \frac{\rho_f \phi}{\rho_s F}\lambda_i \left[\frac{D_i^0 \alpha_{i-1}}{D_{i-1}^0 \alpha_i} \exp[U_{i-1}^f - U_i^f]-1\right]
+    \end{aligned}
+\end{equation}
+
+\begin{equation}\label{eq:49}
+    \begin{aligned}
+    	\frac{dU_i^s}{dz} = \frac{1}{(1 - F(z))}\left[\frac{dF}{dz} \left(1 - \frac{1}{D_i(z)}\right)\right]+ \frac{\Re h}{\rho_s W_0 D_i(z)(1 - F(z))}\left[\frac{D_i(z)}{D_i^0} \exp[U_i^f(z) - U_i^s(z)] - 1 \right] + \\
+	\frac{1-\phi}{1-F(z)}\lambda_i \left[\frac{\alpha_{i-1}}{\alpha_i} \exp[U_{i-1}^s - U_i^s]-1\right]
+    \end{aligned}
+\end{equation}
+
+where $h$ is the total height of the melting column.
+
+    \hypertarget{the-dahmkuxf6hler-number}{%
+\subsubsection{The Dahmköhler number}\label{the-dahmkuxf6hler-number}}
+
+The dimensionless combination
+
+\begin{equation}
+    Da = \frac{\Re h}{\rho_s W_0}\label{eq:50}
+\end{equation}
+
+is the Dahmköhler number, which governs the reaction rate relative to the solid transport time. If re-equilibration is limited by solid state diffusion, $\Re$ can be estimated using:
+
+\begin{equation}
+    \Re \approx \frac{\rho_s{\cal D}_i}{d^2}\label{eq:51}
+\end{equation}
+
+where ${\cal D}_i$ is the *solid state* diffusivity of element $i$, and $d$ is a nominal spacing between melt-channels (this spacing could, for example, be the average grain diameter for grain-scale channels, or 10 cm for closely spaced veins). 
+
+In this case (which we will assume for this paper),  the Dahmköhler number can be written
+
+\begin{equation}
+    Da = \frac{{\cal D}_i h}{W_0 d^2}\label{eq:52}
+\end{equation}
+
+Substituting the definition of $Da$ above yields the final dimensionless ODEs for the disequilbrium transport model:
+
+\begin{equation}
+    \frac{dU_i^f}{dz} = \frac{1}{F(z)}\left(\frac{dF}{dz} + Da\right)\left(\frac{D_i^0}{D_i(z)}\exp[U_i^s(z) - U_i^f(z)] - 1\right) + \frac{\rho_f \phi}{\rho_s F}\lambda_i \left[\frac{D_i^0 \alpha_{i-1}}{D_{i-1}^0 \alpha_i} \exp[U_{i-1}^f - U_i^f]-1\right]\label{eq:53}
+\end{equation}
+
+\begin{equation}\label{eq:54}
+    \begin{aligned}
+    	\frac{dU_i^s}{dz} = \frac{1}{(1 - F(z))}\left[\frac{dF}{dz} \left(1 - \frac{1}{D_i(z)}\right)+ \frac{Da}{D_i(z)}\left(\frac{D_i(z)}{D_i^0}\exp[U_i^f(z) - U_i^s(z)] - 1\right) \right]+ \\
+	\frac{1-\phi}{1-F(z)}\lambda_i \left[\frac{\alpha_{i-1}}{\alpha_i} \exp[U_{i-1}^s - U_i^s]-1\right]
+    \end{aligned}
+\end{equation}
+
+with initial conditions $U_i^s = U_i^f = 0$.
+
+In the limit where the Dahmköhler number approaches zero, the above formulas reduce to pure disequilibrium transport, whereas if $Da$ approaches infinity (i.e., infinitely fast reactivity compared to physical transport), the system approaches equilibrium conditions ($c_i^s \rightarrow D_i c_i^f$).
+
+    \hypertarget{initial-conditions}{%
+\subsubsection{Initial conditions}\label{initial-conditions}}
+
+Inspection of equation (\ref{eq:53}) shows that for the initial conditions described above and $F(0)=0$, $\frac{dU_i^f}{dz}$ is ill-defined (at least numerically in a floating-point system). However, taking the limit $z\rightarrow 0$ and applying L'Hôpital's rule yields
+
+\begin{equation}
+    \lim_{z\rightarrow 0} \frac{dU_i^f}{dz} = \frac{U_i^{'s}(0) - U_i^{'f}(0)}{F'(0)}\left(\frac{dF}{dz} + Da\right) +  \lambda_i \left[\frac{D_i^0 \alpha_{i-1}}{D_{i-1}^0 \alpha_i} - 1\right] \label{eq:55}
+\end{equation}
+
+where
+
+\begin{equation}
+    U_i^{'s}(0) = \left.\frac{dU_i^s}{dz}\right|_{z=0}\label{eq:56}
+\end{equation}
+
+\begin{equation}
+    U_i^{'f}(0) = \left.\frac{dU_i^f}{dz}\right|_{z=0}\label{eq:57}
+\end{equation}
+
+\begin{equation}
+    F'(0) = \left.\frac{dF}{dz}\right|_{z=0}\label{eq:58}
+\end{equation}
+
+The initial radiogenic term also uses the limit from equation (\ref{eq:34}):
+
+\begin{equation}
+    \lim_{z\rightarrow 0}  \frac{\rho_f \phi}{\rho_s F} = \frac{W_0}{w(0)} = 1\label{eq:59}
+\end{equation}
+
+Rearranging equation (\ref{eq:55}) gives the value for $U_i^{'f}(0)$ for $F=0$ as
+
+\begin{equation}
+    \lim_{z\rightarrow 0} \frac{dU_i^f}{dz} = \frac{1}{2 + \frac{Da}{F'(0)}}\left[U_i^{'s}(0)\left(1 + \frac{Da}{F'(0)}\right) +\lambda_i \left[\frac{D_i^0 \alpha_{i-1}}{D_{i-1}^0 \alpha_i} - 1\right] \right]\label{eq:60}
+\end{equation}
+
+    \hypertarget{a-pyusercalc-jupyter-notebook}{%
+\section{A pyUserCalc Jupyter notebook}\label{a-pyusercalc-jupyter-notebook}}
+
+    \hypertarget{code-design}{%
+\subsection{Code design}\label{code-design}}
+
+The \colorbox{gray!20}{\texttt{UserCalc}} Python package implements both equilibrium and disequilibrium transport models and provides a set of code classes and utility functions for calculating and visualizing the results of one-dimensional, steady-state, partial melting forward models for both the $^{238}$U and $^{235}$U decay chains. The code package is organized into a set of Python classes and plotting routines, which are documented in the docstrings of the classes and also demonstrated in detail below. Here we briefly describe the overall functionality and design of the code, which is open-source and can be modified to suit an individual researcher's needs. The code is currently available in a Git repository (https://gitlab.com/ENKI-portal/pyUsercalc), and any future edits or merge requests will be managed through GitLab.
+
+The equilibrium and disequilibrium transport models described above have each been implemented as Python classes with a generic code interface:
+\bigskip
+\begin{lstlisting}
+```
+Interface:
+----------
+    model(alpha0,lambdas,D,W0,F,dFdz,phi,rho_f=2800.,rho_s=3300.,method=method,Da=inf)
+
+Parameters:
+-----------
+    alpha0  :  numpy array of initial activities
+    lambdas :  numpy array of decay constants scaled by solid transport time
+    D       :  Function D(z) -- returns an array of partition coefficents at scaled height z
+    W0      :  float -- Solid mantle upwelling rate
+    F       :  Function F(z) -- returns the degree of melting F  
+    dFdz    :  Function dFdz(z) --  returns the derivative of F  
+    phi     :  Function phi(z) --  returns the porosity  
+    rho_f   :  float -- melt density
+    rho_s   :  float -- solid density
+    method  :  string -- ODE time-stepping scheme to be passed to solve_ivp (one of 'RK45', 'Radau', 'BDF')
+    Da      :  float -- Dahmkohler Number (defaults to \inf, unused in equilibrium model)
+
+Required Method:
+----------------
+        model.solve(): returns depth and log concentration numpy arrays  z, Us, Uf
+```
+\end{lstlisting}
+\bigskip
+
+which solves the scaled equations (i.e., equations (\ref{eq:9}) or equations (\ref{eq:53}) and (\ref{eq:54})) for the log concentrations of nuclides $\mathbf{U}_i^f$ and $\mathbf{U}_i^s$ in a decay chain of arbitrary length, with scaled decay constants $\lambda^\prime_i$ and initial activity ratios $\alpha_0$. The model equations are always solved in a one-dimensional column with scaled height $0 \leq z \leq 1$, where bulk partition coefficients $D_i(z)$, degree of melting $F(z)$, melting rate $dF/dz(z)$, and porosity $\phi(z)$ are provided by functions with height in the column. Optional arguments include the melt and solid densities $\rho_f$ and $\rho_s$, the Dahmköhler number $Da$, and the preferred numerical integration method (see \colorbox{gray!20}{\texttt{scipy.integrate.solve\_ivp}}).
+
+\colorbox{gray!20}{\texttt{UserCalc}} provides two separate model classes, \colorbox{gray!20}{\texttt{EquilTransport}} and \colorbox{gray!20}{\texttt{DisequilTransport}}, for the different transport models; the user could add any other model that uses the same interface, if desired. Most users, however, will not access the models directly but rather through the driver class \colorbox{gray!20}{\texttt{UserCalc.UserCalc}}, which provides support for solving and visualizing column models for the relevant $^{238}U$ and $^{235}U$ decay chains. The general interface for the \colorbox{gray!20}{\texttt{UserCalc}} class is:
+\bigskip
+\begin{lstlisting}[showstringspaces=false]
+```
+A class for constructing solutions for 1-D, steady-state, open-system  U-series transport calculations
+        as in Spiegelman (2000) and Elkins and Spiegelman (submitted).
+
+    Usage:
+    ------
+     
+        us = UserCalc(df,dPdz = 0.32373,n = 2.,tol=1.e-6,phi0 = 0.008,
+                  W0 =3.,model=EquilTransport,Da=None,stable=False,method='Radau')
+
+    Parameters:
+    -----------
+    df  :  A pandas dataframe with columns ['P','F', Kr','DU','DTh','DRa','DPa']
+    dPdz  :  float -- Pressure gradient, to convert pressure P to depth z
+    n  :  float -- Permeability exponent
+    tol  :  float -- Tolerance for the ODE solver
+    phi0  :  float -- Reference melt porosity
+    W0  :  float -- Upwelling velocity (cm/yr)
+    model  :  class -- A U-series transport model class (one of EquilTransport or DisequilTransport)
+    Da  :  float -- Optional Da number for disequilibrium transport model
+    stable  :  bool
+	True:  calculates concentrations for non-radiogenic nuclides with same chemical properties (i.e. sets lambda=0)
+	False:  calculates the full radiogenic problem
+    method  :  string
+	ODE time-stepping method to pass to solve_ivp  (usually one of 'Radau', 'BDF', or 'RK45')
+```
+\end{lstlisting}
+\bigskip
+
+The principal required input is a \colorbox{gray!20}{\texttt{pandas.Dataframe}} object that provides a spreadsheet containing the degree of melting $F(P)$, relative permeability $K_r(P)$, and bulk partition coefficients for the elements $D_U$, $D_{Th}$, $D_{Ra}$ and $D_{Pa}$ as functions of pressure $P$. The structure of the input data spreadsheet is the same as that described in Spiegelman, (2000). Once given this spreadsheet, the code routine initializes the decay constants for the isotopic decay chains and provides functions to interpolate $F(z)$ and $D_i(z)$ and calculate the porosity $\phi(z)$. Once thus initialized, the \colorbox{gray!20}{\texttt{UserCalc}} class further provides the following methods:
+\bigskip
+\begin{lstlisting}
+```
+    Principal Methods:
+    --------
+        phi                   :  returns porosity as a function of column height
+        set_column_parameters :  resets principal column parameters phi0, n, W0
+        solve_1D              :  1D column solution for a single Decay chain 
+                                    with arbitrary D, lambda, alpha_0
+        solve_all_1D          : Solves a single column model for both 238U and 235U chains.  
+                                    returns a pandas dataframe
+        solve_grid            : Solves multiple column models for a grid of porosities and upwelling rates
+                                    returns a 3-D array of activity ratios    
+```
+\end{lstlisting}
+\bigskip
+
+Of these,  the principal user-facing methods are:
+
+\begin{itemize}
+	\item \colorbox{gray!20}{\texttt{UserCalc.solve\_all\_1D}}, which returns a \colorbox{gray!20}{\texttt{pandas.Dataframe}} containing solutions for the porosity ($\phi(z)$), the log concentrations of the specified nuclides in the $^{238}U$ and $^{235}U$ decay chains in both the melt and the solid at each interpolated depth $z$, and the U-series activity ratios, likewise for each depth $z$.
+	\item \colorbox{gray!20}{\texttt{UserCalc.solve\_grid}}, which solves for a grid of one-dimensional solutions for different reference porosities ($phi_0$) and solid upwelling rates ($W_0$) and returns arrays of U-series activity ratios at a specified depth (usually the top of the column), as described in Spiegelman and Elliott (1993).
+\end{itemize}
+
+    \hypertarget{visualization-functions}{%
+\subsubsection{Visualization Functions}\label{visualization-functions}}
+
+In addition to the principal classes for calculating U-series activity ratios in partial melts, the \colorbox{gray!20}{\texttt{UserCalc}} package also provides functions for visualizing model inputs and outputs. The primary plotting functions include:
+
+\begin{itemize}
+	\item \colorbox{gray!20}{\texttt{UserCalc.plot\_inputs(df)}}: Visualizes the input dataframe to show $F(P)$, $K_r(P)$ and $D_i(P)$.
+	\item \colorbox{gray!20}{\texttt{UserCalc.plot\_1Dcolumn(df)}}: Visualizes the output dataframe for a single one-dimensional melting column.
+	\item \colorbox{gray!20}{\texttt{UserCalc.plot\_contours(phi0,W0,act)}}: Visualizes the output of \colorbox{gray!20}{\texttt{UserCalc.solve\_grid}} by generating contour plots of activity ratios at a specific depth as functions of the porosity ($\phi_0$) and solid upwelling rate ($W_0$).
+	\item \colorbox{gray!20}{\texttt{UserCalc.plot\_mesh\_Ra(Th,Ra,W0,phi0)}} and \colorbox{gray!20}{\texttt{UserCalc.plot\_mesh\_Pa(Th,Pa,W0,phi0)}}: Generates 'mesh' plots showing results for different $\phi_0$ and $W_0$ values on ($^{226}Ra$/$^{230}Th$) vs. ($^{230}Th$/$^{238}U$) and ($^{231}Pa$/$^{235}U$) vs. ($^{230}Th$/$^{238}U$) activity diagrams.
+\end{itemize}
+
+Both the primary solver routines and visualization routines will be demonstrated in detail below.
+
+    \hypertarget{an-example-demonstrating-pyusercalc-functionality-for-a-single-melting-column}{%
+\subsection{An example demonstrating pyUserCalc functionality for a single melting column}\label{an-example-demonstrating-pyusercalc-functionality-for-a-single-melting-column}}
+
+The Python code cells embedded below provide an example problem that demonstrates the use and behavior of the model for a simple, two-layer upwelling mantle column, with a constant melting rate within each layer and constant $K_r=1$. This example is used to compare the outcomes from the original UserCalc equilibrium model (Spiegelman, 2000) to various other implementations of the code, such as pure disequilibrium transport and scaled reactivity rates, as described above.
+
+To use this Jupyter notebook, while in a web-enabled browser the user should select an embedded code cell by mouse-click and then simultaneously type the 'Shift' and 'Enter' keys to run the cell, after which selection will automatically advance to the following cell. The first cell below imports necessary code libraries to access the Python toolboxes and functions that will be used in the rest of the program.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Select this cell with by mouseclick, and run the code by simultaneously typing the \PYZsq{}Shift\PYZsq{} + \PYZsq{}Enter\PYZsq{} keys.}
+\PY{c+c1}{\PYZsh{} If the browser is able to run the Jupyter notebook, a number [1] will appear to the left of the cell.}
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+
+\PY{c+c1}{\PYZsh{} Import UserCalc:}
+\PY{k+kn}{import} \PY{n+nn}{UserCalc} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{entering-initial-input-information-and-viewing-input-data}{%
+\subsubsection{Entering initial input information and viewing input data}\label{entering-initial-input-information-and-viewing-input-data}}
+
+In the full Jupyter notebook code available in the Git repository and provided here as supplementary materials, the user can edit a notebook copy and indicate their initial input data, as has been done for the sample data set below. The name for the user's input data file should be set in quotes (i.e., replacing the word 'sample' in the cell below with the appropriate filename, minus the file extension). This name will be used both to find the input file and to label any output files produced. Our sample file can likewise be downloaded and used as a formatting template for other input files (see Supplementary Materials), and is presented as a useful example below. The desired input file should be saved to a 'data' folder in the notebook directory prior to running the code.
+
+Once the cell has been edited to contain the correct input file name, the user should run the cell using the technique described above.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{runname}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sample}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The cell below will read in the input data using the user filename specified above:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{input\PYZus{}file} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{.csv}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{runname}\PY{p}{)}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{input\PYZus{}file}\PY{p}{,}\PY{n}{skiprows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n+nb}{float}\PY{p}{)}
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       P        F   Kr       DU      DTh      DRa      DPa
+0   40.0  0.00000  1.0  0.00900  0.00500  0.00002  0.00001
+1   39.0  0.00241  1.0  0.00900  0.00500  0.00002  0.00001
+2   38.0  0.00482  1.0  0.00900  0.00500  0.00002  0.00001
+3   37.0  0.00723  1.0  0.00900  0.00500  0.00002  0.00001
+4   36.0  0.00964  1.0  0.00900  0.00500  0.00002  0.00001
+5   35.0  0.01210  1.0  0.00900  0.00500  0.00002  0.00001
+6   34.0  0.01450  1.0  0.00900  0.00500  0.00002  0.00001
+7   33.0  0.01690  1.0  0.00900  0.00500  0.00002  0.00001
+8   32.0  0.01930  1.0  0.00900  0.00500  0.00002  0.00001
+9   31.0  0.02170  1.0  0.00900  0.00500  0.00002  0.00001
+10  30.0  0.02410  1.0  0.00900  0.00500  0.00002  0.00001
+11  29.0  0.02650  1.0  0.00900  0.00500  0.00002  0.00001
+12  28.0  0.02890  1.0  0.00900  0.00500  0.00002  0.00001
+13  27.0  0.03130  1.0  0.00900  0.00500  0.00002  0.00001
+14  26.0  0.03370  1.0  0.00900  0.00500  0.00002  0.00001
+15  25.0  0.03620  1.0  0.00900  0.00500  0.00002  0.00001
+16  24.0  0.03860  1.0  0.00900  0.00500  0.00002  0.00001
+17  23.0  0.04100  1.0  0.00899  0.00500  0.00002  0.00001
+18  22.0  0.04340  1.0  0.00893  0.00498  0.00002  0.00001
+19  21.0  0.04610  1.0  0.00852  0.00488  0.00002  0.00001
+20  20.0  0.05000  1.0  0.00700  0.00450  0.00002  0.00001
+21  19.0  0.05610  1.0  0.00548  0.00412  0.00002  0.00001
+22  18.0  0.06340  1.0  0.00507  0.00402  0.00002  0.00001
+23  17.0  0.07100  1.0  0.00501  0.00400  0.00002  0.00001
+24  16.0  0.07860  1.0  0.00500  0.00400  0.00002  0.00001
+25  15.0  0.08620  1.0  0.00500  0.00400  0.00002  0.00001
+26  14.0  0.09370  1.0  0.00500  0.00400  0.00002  0.00001
+27  13.0  0.10133  1.0  0.00500  0.00400  0.00002  0.00001
+28  12.0  0.10892  1.0  0.00500  0.00400  0.00002  0.00001
+29  11.0  0.11651  1.0  0.00500  0.00400  0.00002  0.00001
+30  10.0  0.12410  1.0  0.00500  0.00400  0.00002  0.00001
+31   9.0  0.13169  1.0  0.00500  0.00400  0.00002  0.00001
+32   8.0  0.13928  1.0  0.00500  0.00400  0.00002  0.00001
+33   7.0  0.14687  1.0  0.00500  0.00400  0.00002  0.00001
+34   6.0  0.15446  1.0  0.00500  0.00400  0.00002  0.00001
+35   5.0  0.16205  1.0  0.00500  0.00400  0.00002  0.00001
+36   4.0  0.16964  1.0  0.00500  0.00400  0.00002  0.00001
+37   3.0  0.17723  1.0  0.00500  0.00400  0.00002  0.00001
+38   2.0  0.18482  1.0  0.00500  0.00400  0.00002  0.00001
+39   1.0  0.19241  1.0  0.00500  0.00400  0.00002  0.00001
+40   0.0  0.20000  1.0  0.00500  0.00400  0.00002  0.00001
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\hangindent=2em
+\hangafter=0
+    \textbf{Table 1.} Input data table for example tested here, showing
+pressures in kbar ($P$), degree of melting ($F$), permeability
+coefficient ($K_r$), and bulk solid/melt partition coefficients
+($D_i$) for the elements of interest, U, Th, Ra, and Pa.
+
+The next cell will visualize the input dataframe in Figure 1, using the
+utility function \colorbox{gray!20}{\texttt{plot\_inputs}}:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}inputs}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 1.} Diagrams showing example input parameters $F$, $K_r$, and $D_i$ as a function of pressure, for the sample input file tested here.
+
+\bigskip
+
+    \hypertarget{single-column-equilibrium-transport-model}{%
+\subsubsection{Single column equilibrium transport model}\label{single-column-equilibrium-transport-model}}
+
+In its default mode, \colorbox{gray!20}{\texttt{UserCalc}} solves the one-dimensional steady-state equilibrium transport model described in Spiegelman (2000). Below we will initialize the model, solve for a single column and plot the results.
+
+First we set the physical parameters for the upwelling column and initial conditions:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Maximum melt porosity:}
+\PY{n}{phi0} \PY{o}{=} \PY{l+m+mf}{0.008}
+
+\PY{c+c1}{\PYZsh{} Solid upwelling rate in cm/yr. (to be converted to km/yr. in the driver function):}
+\PY{n}{W0} \PY{o}{=} \PY{l+m+mf}{3.}
+
+\PY{c+c1}{\PYZsh{} Permeability exponent:}
+\PY{n}{n} \PY{o}{=} \PY{l+m+mf}{2.}
+
+\PY{c+c1}{\PYZsh{} Solid and liquid densities in kg/m3:}
+\PY{n}{rho\PYZus{}s} \PY{o}{=} \PY{l+m+mf}{3300.}
+\PY{n}{rho\PYZus{}f} \PY{o}{=} \PY{l+m+mf}{2800.}
+
+\PY{c+c1}{\PYZsh{} Initial activity values (default is 1.0):}
+\PY{n}{alpha0\PYZus{}238U} \PY{o}{=} \PY{l+m+mf}{1.}
+\PY{n}{alpha0\PYZus{}235U} \PY{o}{=} \PY{l+m+mf}{1.}
+\PY{n}{alpha0\PYZus{}230Th} \PY{o}{=} \PY{l+m+mf}{1.}
+\PY{n}{alpha0\PYZus{}226Ra} \PY{o}{=} \PY{l+m+mf}{1.}
+\PY{n}{alpha0\PYZus{}231Pa} \PY{o}{=} \PY{l+m+mf}{1.}
+\PY{n}{alpha0\PYZus{}all} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alpha0\PYZus{}238U}\PY{p}{,} \PY{n}{alpha0\PYZus{}230Th}\PY{p}{,} \PY{n}{alpha0\PYZus{}226Ra}\PY{p}{,} \PY{n}{alpha0\PYZus{}235U}\PY{p}{,} \PY{n}{alpha0\PYZus{}231Pa}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+Next, we initialize the default equilibrium model:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}eq} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{UserCalc}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+and run the model for the input code and display the results for the final predicted melt composition in List 1:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}out\PYZus{}eq} \PY{o}{=} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+      P    z    F    phi  (230Th/238U)  (226Ra/230Th)  (231Pa/235U)   Uf\_238U
+40  0.0  0.0  0.2  0.008      1.164941       1.590091       2.10557 -3.121055
+
+    Uf\_230Th  Uf\_226Ra   Us\_238U  Us\_230Th  Us\_226Ra   Uf\_235U  Uf\_231Pa
+40 -3.556171 -8.613841 -3.121055 -3.556171 -8.613841 -3.121909 -9.179718
+
+     Us\_235U  Us\_231Pa
+40 -3.121909 -9.179718
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{List 1.} Model output results for the equilibrium melting scenario tested above.
+
+\bigskip
+
+    The cell below produces Figure 2, which shows the model results with depth:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}1Dcolumn}\PY{p}{(}\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 2.} Equilibrium model output results for the degree of melting, residual melt porosity, and activity ratios ($^{230}$Th/$^{238}$U), ($^{226}$Ra/$^{230}$Th), and ($^{231}$Pa/$^{235}$U) as a function of pressure.
+
+\bigskip
+
+    \hypertarget{single-column-disequilibrium-transport-model}{%
+\subsubsection{Single column disequilibrium transport model}\label{single-column-disequilibrium-transport-model}}
+
+For comparison, we can repeat the calculation using the disequilibrium transport model, and compare the results to the equilibrium model. We first initialize a new model with $Da=0$, which will calculate full disequilibrium transport:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}diseq} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{UserCalc}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{n}{model}\PY{o}{=}\PY{n}{UserCalc}\PY{o}{.}\PY{n}{DisequilTransport}\PY{p}{,} \PY{n}{Da}\PY{o}{=}\PY{l+m+mf}{0.}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+The cells below calculate solutions for this pure disequilibrium scenario, as shown in List 2:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}out} \PY{o}{=} \PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\PY{n}{df\PYZus{}out}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+      P    z    F    phi  (230Th/238U)  (226Ra/230Th)  (231Pa/235U)   Uf\_238U
+40  0.0  0.0  0.2  0.008      1.051064       1.001054      1.055847 -3.096744
+
+    Uf\_230Th  Uf\_226Ra    Us\_238U   Us\_230Th   Us\_226Ra   Uf\_235U  Uf\_231Pa
+40 -3.634727 -9.155135 -39.606509 -39.945908 -42.201598 -3.096769 -9.844821
+
+      Us\_235U  Us\_231Pa
+40 -39.602818 -45.46502
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{List 2.} Model output results for the disequilibrium melting scenario tested above.
+
+\bigskip
+
+Next we compare the results to our equilibrium calculation above:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}1Dcolumn}\PY{p}{(}\PY{n}{df\PYZus{}out}\PY{p}{)}
+\PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+        \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{p}{[}\PY{n}{s}\PY{p}{]}\PY{p}{,}\PY{n}{df\PYZus{}out}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grey}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Da = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{Da}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 3.} Disequilibrium model output results for the degree of melting, residual melt porosity, and activity ratios ($^{230}$Th/$^{238}$U), ($^{226}$Ra/$^{230}$Th), and ($^{231}$Pa/$^{235}$U) as a function of pressure, for the Dahmköhler number shown ($Da = 0$). For comparison, the dashed gray curves show solutions for the equilibrium transport model.
+
+\bigskip
+
+The dashed grey curves in Figure 3 illustrate the equilibrium transport solution, which is significantly different from the disequilibrium solution. If we increase the value of $Da$, however, the disequilibrium transport solution should converge towards the equilibrium scenario. To illustrate this, below we calculate the result for $Da=1$:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{Da}\PY{o}{=}\PY{l+m+mf}{1.}
+\PY{n}{df\PYZus{}out} \PY{o}{=} \PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+      P    z    F    phi  (230Th/238U)  (226Ra/230Th)  (231Pa/235U)   Uf\_238U
+40  0.0  0.0  0.2  0.008      1.164941       1.590091       2.10557 -3.121055
+
+    Uf\_230Th  Uf\_226Ra   Us\_238U  Us\_230Th  Us\_226Ra   Uf\_235U  Uf\_231Pa
+40 -3.556171 -8.613841 -3.121055 -3.556171 -8.613841 -3.121909 -9.179718
+
+     Us\_235U  Us\_231Pa
+40 -3.121909 -9.179718
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{List 3.} Model output results for the disequilibrium melting scenario tested above, where $Da = 1$.
+
+\bigskip
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}1Dcolumn}\PY{p}{(}\PY{n}{df\PYZus{}out}\PY{p}{)}
+\PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+        \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{p}{[}\PY{n}{s}\PY{p}{]}\PY{p}{,}\PY{n}{df\PYZus{}out}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grey}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Da = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{Da}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 4.} Disequilibrium model output as in  Figure 3, but for $Da = 1$.
+
+\bigskip
+
+The outcome of the above calculation (Figure 4, List 3) approaches the equilibrium scenario more closely, as predicted. Below is an additional comparison for $Da=10$:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{Da}\PY{o}{=}\PY{l+m+mf}{10.}
+\PY{n}{df\PYZus{}out} \PY{o}{=} \PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}1Dcolumn}\PY{p}{(}\PY{n}{df\PYZus{}out}\PY{p}{)}
+\PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+        \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{p}{[}\PY{n}{s}\PY{p}{]}\PY{p}{,}\PY{n}{df\PYZus{}out}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grey}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Da = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{Da}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_46_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 5.} Disequilibrium model output as in  Figure 3, but for $Da = 10$.
+
+\bigskip
+
+For $Da=10$ (Figure 5), the activity ratios in the melt are indistinguishable from the equilibrium calculation, suggesting that a Dahmköhler number of 10 is sufficiently high for a melting system to approach chemical equilibrium, and illustrating that the equilibrium model of Spiegelman and Elliott (1993) and Spiegelman (2000) is the limiting case for the more general disequilibrium model presented here.  For this problem, equilibrium transport always provides an upper bound on activity ratios.
+
+    \hypertarget{stable-element-concentrations}{%
+\subsubsection{Stable element concentrations}\label{stable-element-concentrations}}
+
+For a stable element, i.e., $\lambda_i = 0$, Spiegelman and Elliott (1993) showed that the equilibrium melting model reduces identically to simple batch melting (Shaw, 1970), while the disequilibrium model with $Da=0$ is equivalent to true fractional melting. This presents a useful test of the calculator that verifies the program is correctly calculating stable concentrations. To simulate stable element concentrations for U, Th, Ra, and Pa during equilbrium melting, we can use the same input file example as above and simply test the scenario where $\lambda_i$ values are equal to zero.
+
+First, we impose a "stable" condition that changes all decay constants $\lambda_i = 0$:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}eq} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{UserCalc}\PY{p}{(}\PY{n}{df}\PY{p}{,}\PY{n}{stable}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{df\PYZus{}out\PYZus{}eq} \PY{o}{=} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+      P    z    F    phi  (230Th/238U)  (226Ra/230Th)  (231Pa/235U)   Uf\_238U
+40  0.0  0.0  0.2  0.008      1.003937       1.015919      1.019959 -3.120895
+
+    Uf\_230Th  Uf\_226Ra   Us\_238U  Us\_230Th  Us\_226Ra   Uf\_235U  Uf\_231Pa
+40 -3.704753  -9.21042 -3.120895 -3.704753  -9.21042 -3.120895 -9.903528
+
+     Us\_235U  Us\_231Pa
+40 -3.120895 -9.903528
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{List 4.} Model output results for equilibrium porous flow melting where $\lambda_i = 0$, simulating stable element behavior for U, Th, Ra, and Pa and thus true (instantaneous) batch melting.
+
+\bigskip
+
+For comparison with the results in List 4, we can use the batch melting equation (Shaw, 1970) to calculate the concentrations of U, Th, Ra, and Pa using the input values in Table 1 for $F(z)$ and $D_i$, where:
+
+\begin{equation}
+    \frac{c_i^f}{c_i^0} = \frac{1}{F + D_i(1-F)}\label{eq:61}
+\end{equation}
+
+and determine radionuclide activities for the batch melt using the definition of the activity $a$ for a nuclide $i$:
+
+\begin{equation}
+    a_i = \lambda_i c_i^f\label{eq:62}
+\end{equation}
+
+and the initial nuclide activities $a_i^0$, such that:
+
+\begin{equation}
+    a_i = \frac{a_i^0}{F + D_i (1 -  F)}\label{eq:63}
+\end{equation}
+
+As the activity ratios in List 5 illustrate, the outcomes of this simple batch melting equation are identical to those produced by the model for equilibrium transport and $\lambda=0$.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}batch}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DU}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DTh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DRa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DPa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\PY{n}{df\PYZus{}batch}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{*}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DTh}\PY{o}{+}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DTh}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{*}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DU}\PY{o}{+}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DU}\PY{p}{)}\PY{p}{)}
+\PY{n}{df\PYZus{}batch}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{*}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DRa}\PY{o}{+}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DRa}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{*}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DTh}\PY{o}{+}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DTh}\PY{p}{)}\PY{p}{)}
+\PY{n}{df\PYZus{}batch}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{*}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DPa}\PY{o}{+}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DPa}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{F}\PY{o}{*}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DU}\PY{o}{+}\PY{n}{df\PYZus{}batch}\PY{o}{.}\PY{n}{DU}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Extract columns and concatenate dataframes}
+\PY{n}{cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{df\PYZus{}compare} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[} \PY{n}{df\PYZus{}batch}\PY{p}{[}\PY{n}{cols}\PY{p}{]}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{df\PYZus{}out\PYZus{}eq}\PY{p}{[}\PY{n}{cols}\PY{p}{]}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{df\PYZus{}compare}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batch Melting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Equilibrium Transport: stable elements}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{df\PYZus{}compare}\PY{o}{.}\PY{n}{set\PYZus{}index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                          P    F  (230Th/238U)  (226Ra/230Th)
+model
+Batch Melting                           0.0  0.2      1.003937       1.015919
+Equilibrium Transport: stable elements  0.0  0.2      1.003937       1.015919
+
+                                        (231Pa/235U)
+model
+Batch Melting                               1.019959
+Equilibrium Transport: stable elements      1.019959
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{List 5.} Simple batch melting calculation results using the methods of Shaw (1970), demonstrating identical activity ratio results to those calculated using the equilibrium transport model with $\lambda_i=0$.
+
+\bigskip
+
+Similarly, we can also determine pure disequilibrium melting using the disequilibrium transport model with $\lambda_i=0$. A simple fractional melting problem is easiest to test using constant melt productivity and partitioning behavior, so here we test a simplified, one-layer scenario with constant $dF/dz$ and $D_i$ values:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{input\PYZus{}file\PYZus{}2} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/simple\PYZus{}sample.csv}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{df\PYZus{}test} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{input\PYZus{}file\PYZus{}2}\PY{p}{,}\PY{n}{skiprows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n+nb}{float}\PY{p}{)}
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}inputs}\PY{p}{(}\PY{n}{df\PYZus{}test}\PY{p}{)}
+\PY{n}{df\PYZus{}test}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+      P       F   Kr     DU    DTh      DRa      DPa
+40  0.0  0.0964  1.0  0.009  0.005  0.00002  0.00001
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_56_1.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 6.} Simple alternative input file with constant melt productivity and constant solid/melt partitioning, used here to test pure fractional melting outputs.
+
+\bigskip
+
+We note that numerical ODE solvers may not successfully solve for pure fractional melting with $Da=0$ and stable elements, because the resulting extreme changes in solid concentrations for highly incompatible elements are difficult to resolve using numerical methods. Stable solutions can nonetheless be obtained for very small values of $Da$ that approach $Da=0$, and such solutions still provide a useful test of the disequilibrium transport model. Here we use $Da=10^{-10}$; for such low $Da$ values, the liquid closely approaches the composition of an accumulated fractional melt, and although the liquid and solid outcomes are slightly different from pure fractional melting, the solid is still essentially depleted of all incompatible nuclides.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}diseq\PYZus{}test} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{UserCalc}\PY{p}{(}\PY{n}{df\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{=}\PY{n}{UserCalc}\PY{o}{.}\PY{n}{DisequilTransport}\PY{p}{,}\PY{n}{stable}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{Da}\PY{o}{=}\PY{l+m+mf}{1.e\PYZhy{}10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}diseq\PYZus{}test} \PY{o}{=} \PY{n}{us\PYZus{}diseq\PYZus{}test}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+Similar to our approach for equilibrium and batch melting, we can compare the results of disequilibrium transport for stable elements with pure fractional melting for constant partition coefficients using the definition of aggregated fractional melt concentrations (Figure 7):
+
+\begin{equation}
+    \frac{c_i^s}{c_i^{s,0}} = (1 - F)^{1/D_i-1}\label{eq:64}
+\end{equation}
+
+\begin{equation}
+    \frac{c_i^f}{c_i^{f,0}} = \frac{D_i}{F} \left(1 - (1 - F)^{1/D_i}\right)\label{eq:65}
+\end{equation}
+
+or in log units:
+
+\begin{equation}
+   U_i^s = (1/D_i-1)\log(1 - F)\label{eq:66}
+\end{equation}
+
+\begin{equation}
+    U_i^f = \log\left(1 - (1 - F)^{1/D_i}\right) + \log\left(\frac{D_i}{F}\right)\label{eq:67}
+\end{equation}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}frac}\PY{o}{=}\PY{n}{df\PYZus{}test}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DU}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DTh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DRa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DPa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\PY{n}{df\PYZus{}frac}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{DTh}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{DU}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{df\PYZus{}frac}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{DRa}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{DTh}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{df\PYZus{}frac}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{DPa}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{p}{(}\PY{n}{alpha0\PYZus{}all}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{\PYZhy{}}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{F}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{df\PYZus{}frac}\PY{o}{.}\PY{n}{DU}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}1Dcolumn}\PY{p}{(}\PY{n}{df\PYZus{}diseq\PYZus{}test}\PY{p}{)}
+\PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+        \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df\PYZus{}frac}\PY{p}{[}\PY{n}{s}\PY{p}{]}\PY{p}{,}\PY{n}{df\PYZus{}diseq\PYZus{}test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_63_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 7.} Model output results for the degree of melting, residual melt porosity, and activity ratios ($^{230}$Th/$^{238}$U), ($^{226}$Ra/$^{230}$Th), and ($^{231}$Pa/$^{235}$U) as a function of pressure. The solid curves plot the results of pure fractional melting for stable elements, while the dashed black curves illustrate the outcomes of the disequilibrium transport model with $Da=10^{-10}$ and $\lambda_i=0$. The outcomes of the two methods are indistinguishable.
+
+\bigskip
+
+    \hypertarget{considering-lithospheric-transport-scenarios}{%
+\subsubsection{Considering lithospheric transport scenarios}\label{considering-lithospheric-transport-scenarios}}
+
+In mantle decompression melting scenarios, melting is expected to cease in the shallow, colder part of the regime where a lithospheric layer is present. The effects of cessation of melting prior to reaching the surface can be envisioned as affecting magma compositions in a number of ways, some of which could be calculated using the models presented here by setting $dF=0$.
+
+There are, however, several limitations when using our transport models to simulate lithospheric melt transport in this way, as the model equations are written to track steady-state decompression and melting. The first limitation is thus the underlying assumption that the solid is migrating and experiencing progressive melt depletion in the model, while the solid lithosphere should in fact behave as a rigid matrix that does not experiencing upwelling. For the disequilibrium transport model with $Da=0$, no chemical reequilibration occurs while $dF=0$, so the lack of solid migration after the cessation of melting does not pose a problem; instead, in the pure disequilibrium transport case, imposing $dF=0$ simply allows for radioactive decay and ingrowth during transport through the lithospheric layer.
+
+The equilibrium transport model, on the other hand, permits full equilibration even if $dF=0$, but the liquid composition does not directly depend on the solid concentration, $c_i^s(z)$, so ongoing chemical reequilibration between the liquid and a modified lithospheric solid could be simulated by modifying the bulk solid/liquid partition coefficients $D_i$. However, the underlying model assumes that the liquid with mass proportion $F_{max}$ reequilibrates with the solid matrix in a steady-state transport regime, at the maximum reference porosity, which may not accurately simulate the transport regime through the fixed lithosphere with no melting.
+
+The case of the scaled disequilibrium transport model with $Da>0$ is the most complex, since the model directly calculates reequilibration of the liquid with a progressively melting solid layer, and thus may not accurately simulate transport through the fixed solid lithosphere. We advise that if the model is used in this way, the results must be interpreted with caution.
+
+Finally, calculating a given transport model through the upwelling asthenosphere and into a fixed overlying lithospheric layer neglects an additional, significant limitation: namely that melt-rock interactions, and thus the magma transport style, may be different in the lithosphere than in the melting asthenosphere. While it is not possible to change transport models during a single 1D run in the current implementation, one alternative approach is to change the relative permeability, $K_r$, in the lithosphere, in addition to modifying the bulk partition coefficients to reflect lithospheric values. It may also be possible to run a separate, second-stage lithospheric calculation with modified input parameters and revised liquid porosity constraints, but this option is not currently implemented and would require an expansion of the current model.
+
+Despite these caveats, there are some limited scenarios where users may wish to simulate equilibrium or disequilibrium magma transport through a capping layer with constant $dF=0$, constant $\phi = \phi_0$, and revised $D_i$ values for a modified layer mineralogy. The cells below provide options for modifying the existing input data table to impose such a layer. The first cell identifies a final melting pressure $P_{Lithos}$, which is defined by the user in kbar. This value can be set to 0.0 if no lithospheric cap is desired; in the example below, it has been set at 5.0 kbar. There are two overall options for how this final melting pressure could be used to modify the input data. The first option (implemented in the Supplementary Materials but not tested here) simply deletes all lines in the input dataframe for depths shallower than $P_{Lithos}$. This is a straightforward option for a one-dimensional column scenario, where melting simply stops at the base of the lithosphere and the composition of the melt product is observed in that position. This is an effective way to limit further chemical interactions after melting has ceased; it fails to account for additional radioactive decay during lithospheric melt transport, but subsequent isotopic decay over a fixed transport time interval could then be calculated using the radioactive decay equations for U-series nuclides.
+
+A second option, shown here to demonstrate outcomes, changes the degree of melting increments ($dF$) to a value of 0 for all depths shallower than $P_{Lithos}$, but allows model calculations to continue at shallower depths. This is preferable if the user aims to track additional radioactive decay and/or chemical exchange after melting has ceased and during subsequent transport through the lithospheric layer, and shall be explored further below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Plithos} \PY{o}{=} \PY{l+m+mf}{5.0}
+
+\PY{n}{Pfinal} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{Plithos}\PY{p}{)}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{idxmin}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\PY{n}{F\PYZus{}max} \PY{o}{=} \PY{n}{Pfinal}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{Plithos}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{F\PYZus{}max}
+\end{Verbatim}
+\end{tcolorbox}
+
+For equilibrium transport scenarios, the cell below offers one possible option for modifying lithospheric solid/melt bulk partition coefficients. We note that if the disequilibrium transport model is used with $Da = 0$ (i.e., pure chemical disequilibrium), this cell is not necessary.
+
+The option demonstrated below imposes new, constant melt-rock partition coefficients during lithospheric transport. These values are assumed to be fixed. An alternative choice, included in the Supplementary Materials, instead fixes the shallower lithospheric solid/melt bulk partition coefficients such that they are equal to $D_i$ values at the depth where melting ceased (i.e., $P_{Lithos}$).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define new bulk solid/liquiud partition coefficients for the lithospheric layer:}
+\PY{n}{D\PYZus{}U\PYZus{}lith} \PY{o}{=} \PY{l+m+mf}{0.002}
+\PY{n}{D\PYZus{}Th\PYZus{}lith} \PY{o}{=} \PY{l+m+mf}{0.006}
+\PY{n}{D\PYZus{}Ra\PYZus{}lith} \PY{o}{=} \PY{l+m+mf}{0.00002}
+\PY{n}{D\PYZus{}Pa\PYZus{}lith} \PY{o}{=} \PY{l+m+mf}{0.00001}
+
+\PY{c+c1}{\PYZsh{} Implement the changed values defined above:}
+\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{Plithos}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DU}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{D\PYZus{}U\PYZus{}lith}
+\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{Plithos}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DTh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{D\PYZus{}Th\PYZus{}lith}
+\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{Plithos}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DRa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{D\PYZus{}Ra\PYZus{}lith}
+\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{Plithos}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DPa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{D\PYZus{}Pa\PYZus{}lith}
+\end{Verbatim}
+\end{tcolorbox}
+
+Following any changes implemented above, the cells below will process and display the refined input data (Figure 8, Table 2).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}inputs}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_70_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 8.} Diagrams showing input parameters $F$, $K_r$, and $D_i$ as a function of pressure, for the example input file and modified lithospheric conditions.
+
+\bigskip
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       P        F   Kr       DU      DTh      DRa      DPa
+0   40.0  0.00000  1.0  0.00900  0.00500  0.00002  0.00001
+1   39.0  0.00241  1.0  0.00900  0.00500  0.00002  0.00001
+2   38.0  0.00482  1.0  0.00900  0.00500  0.00002  0.00001
+3   37.0  0.00723  1.0  0.00900  0.00500  0.00002  0.00001
+4   36.0  0.00964  1.0  0.00900  0.00500  0.00002  0.00001
+5   35.0  0.01210  1.0  0.00900  0.00500  0.00002  0.00001
+6   34.0  0.01450  1.0  0.00900  0.00500  0.00002  0.00001
+7   33.0  0.01690  1.0  0.00900  0.00500  0.00002  0.00001
+8   32.0  0.01930  1.0  0.00900  0.00500  0.00002  0.00001
+9   31.0  0.02170  1.0  0.00900  0.00500  0.00002  0.00001
+10  30.0  0.02410  1.0  0.00900  0.00500  0.00002  0.00001
+11  29.0  0.02650  1.0  0.00900  0.00500  0.00002  0.00001
+12  28.0  0.02890  1.0  0.00900  0.00500  0.00002  0.00001
+13  27.0  0.03130  1.0  0.00900  0.00500  0.00002  0.00001
+14  26.0  0.03370  1.0  0.00900  0.00500  0.00002  0.00001
+15  25.0  0.03620  1.0  0.00900  0.00500  0.00002  0.00001
+16  24.0  0.03860  1.0  0.00900  0.00500  0.00002  0.00001
+17  23.0  0.04100  1.0  0.00899  0.00500  0.00002  0.00001
+18  22.0  0.04340  1.0  0.00893  0.00498  0.00002  0.00001
+19  21.0  0.04610  1.0  0.00852  0.00488  0.00002  0.00001
+20  20.0  0.05000  1.0  0.00700  0.00450  0.00002  0.00001
+21  19.0  0.05610  1.0  0.00548  0.00412  0.00002  0.00001
+22  18.0  0.06340  1.0  0.00507  0.00402  0.00002  0.00001
+23  17.0  0.07100  1.0  0.00501  0.00400  0.00002  0.00001
+24  16.0  0.07860  1.0  0.00500  0.00400  0.00002  0.00001
+25  15.0  0.08620  1.0  0.00500  0.00400  0.00002  0.00001
+26  14.0  0.09370  1.0  0.00500  0.00400  0.00002  0.00001
+27  13.0  0.10133  1.0  0.00500  0.00400  0.00002  0.00001
+28  12.0  0.10892  1.0  0.00500  0.00400  0.00002  0.00001
+29  11.0  0.11651  1.0  0.00500  0.00400  0.00002  0.00001
+30  10.0  0.12410  1.0  0.00500  0.00400  0.00002  0.00001
+31   9.0  0.13169  1.0  0.00500  0.00400  0.00002  0.00001
+32   8.0  0.13928  1.0  0.00500  0.00400  0.00002  0.00001
+33   7.0  0.14687  1.0  0.00500  0.00400  0.00002  0.00001
+34   6.0  0.15446  1.0  0.00500  0.00400  0.00002  0.00001
+35   5.0  0.16205  1.0  0.00500  0.00400  0.00002  0.00001
+36   4.0  0.16205  1.0  0.00200  0.00600  0.00002  0.00001
+37   3.0  0.16205  1.0  0.00200  0.00600  0.00002  0.00001
+38   2.0  0.16205  1.0  0.00200  0.00600  0.00002  0.00001
+39   1.0  0.16205  1.0  0.00200  0.00600  0.00002  0.00001
+40   0.0  0.16205  1.0  0.00200  0.00600  0.00002  0.00001
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{Table 2.} Input data table for an example scenario with modified lithospheric transport conditions, showing pressures in kbar ($P$), degree of melting ($F$), permeability coefficient ($K_r$), and bulk solid/melt partition coefficients ($D_i$) for the elements of interest, U, Th, Ra, and Pa.
+
+\bigskip
+
+The cells below will rerun the end member models for the modified lithospheric input file. First, equilibrium transport:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}eq} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{UserCalc}\PY{p}{(}\PY{n}{df}\PY{p}{,}\PY{n}{stable}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{df\PYZus{}out\PYZus{}eq} \PY{o}{=} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+And second, for disequilibrium transport with $Da=0$:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{us\PYZus{}diseq} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{UserCalc}\PY{p}{(}\PY{n}{df}\PY{p}{,}\PY{n}{model}\PY{o}{=}\PY{n}{UserCalc}\PY{o}{.}\PY{n}{DisequilTransport}\PY{p}{,}\PY{n}{Da}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{stable}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{df\PYZus{}out\PYZus{}diseq} \PY{o}{=} \PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{solve\PYZus{}all\PYZus{}1D}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{alpha0\PYZus{}all}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+List 6 below displays the activity ratios determined for the final melt compositions at the end of the two simulations (i.e., the tops of the one-dimensional melting columns).
+
+\bigskip
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}compare} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{df\PYZus{}out\PYZus{}diseq}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{df\PYZus{}compare}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Equilibrium Transport}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Disequilbrium Transport}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{df\PYZus{}compare}\PY{o}{.}\PY{n}{set\PYZus{}index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                           P    z        F    phi  (230Th/238U)
+model
+Equilibrium Transport    0.0  0.0  0.16205  0.008      1.015792
+Disequilbrium Transport  0.0  0.0  0.16205  0.008      1.039704
+
+                         (226Ra/230Th)  (231Pa/235U)   Uf\_238U  Uf\_230Th
+model
+Equilibrium Transport         1.894057      1.792975 -2.901132 -3.473250
+Disequilbrium Transport       1.000828      1.034719 -2.891833 -3.440684
+
+                         Uf\_226Ra    Us\_238U   Us\_230Th   Us\_226Ra   Uf\_235U
+model
+Equilibrium Transport   -8.355990  -2.901132  -3.473250  -8.355990 -2.902001
+Disequilbrium Transport -8.961317 -30.351986 -30.353121 -30.353146 -2.884920
+
+                         Uf\_231Pa    Us\_235U   Us\_231Pa
+model
+Equilibrium Transport   -9.120520  -2.902001  -9.120520
+Disequilbrium Transport -9.653185 -30.272812 -30.272749
+\end{Verbatim}
+\end{tcolorbox}
+        
+\hangindent=2em
+\hangafter=0
+    \textbf{List 6.} Model output results for the disequilibrium ($Da = 0$) melting scenarios tested here, with modified lithospheric input conditions.
+
+\bigskip
+
+The following cell generates Figure 9, which illustrates outcomes with depth for the equilibrium and disequilibrium transport models. The model outcomes for the two transport scenarios are notably different, particularly for the shorter-lived isotopic pairs.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}1Dcolumn}\PY{p}{(}\PY{n}{df\PYZus{}out\PYZus{}diseq}\PY{p}{)}
+\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}prop\PYZus{}cycle}\PY{p}{(}\PY{k+kc}{None}\PY{p}{)}
+\PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(230Th/238U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(226Ra/230Th)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(231Pa/235U)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+        \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df\PYZus{}out\PYZus{}eq}\PY{p}{[}\PY{n}{s}\PY{p}{]}\PY{p}{,}\PY{n}{df\PYZus{}out}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Da = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{us\PYZus{}diseq}\PY{o}{.}\PY{n}{Da}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_82_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 9.} Comparison of equilibrium (dashed) and disequilibrium ($Da = 0$; solid) transport model output results for the degree of melting, residual melt porosity, and activity ratios ($^{230}$Th/$^{238}$U), ($^{226}$Ra/$^{230}$Th), and ($^{231}$Pa/$^{235}$U) as a function of pressure, for the modified lithospheric transport scenario explored above. Symbols and lines as in Figure 3.
+
+\bigskip
+
+    \hypertarget{batch-operations}{%
+\subsection{Batch operations}\label{batch-operations}}
+
+For many applications, it is preferable to run a batch of model scenarios over a range of input parameters directly related to questions about the physical constraints on melt generation, such as the maximum residual or reference melt porosity ($\phi_0$) and the solid mantle upwelling rate ($W_0$). The cells below determine a series of one-dimensional column results for the desired transport model for the parameters defined above, but over a range of values for $\phi_0$ and $W_0$; these results are then shown in a series of figures and exported as data tables. The user can select whether to define the specific $\phi_0$ and $W_0$ values as evenly spaced log grid intervals (option 1) or with manually specified values (option 2). As above, all upwelling rates are entered in units of cm/yr. We note that because some of these models tend to be stiff and the Radau solver is relatively expensive, the batch operations below may require a few minutes of computation time for certain scenarios. Here we show the results for the default equilibrium model over a range of selected $\phi_0$ and $W_0$ values of interest:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Option 1 (evenly spaced log grid intervals):}
+\PY{c+c1}{\PYZsh{} phi0 = np.logspace(\PYZhy{}3,\PYZhy{}2,11)}
+\PY{c+c1}{\PYZsh{} W0 = np.logspace(\PYZhy{}1,1,11)}
+
+\PY{c+c1}{\PYZsh{} Option 2 (manual selection of values):}
+\PY{n}{phi0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.001}\PY{p}{,} \PY{l+m+mf}{0.002}\PY{p}{,} \PY{l+m+mf}{0.005}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{]}\PY{p}{)}
+\PY{n}{W0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{1.}\PY{p}{,} \PY{l+m+mf}{2.}\PY{p}{,} \PY{l+m+mf}{5.}\PY{p}{,} \PY{l+m+mf}{10.}\PY{p}{,} \PY{l+m+mf}{20.}\PY{p}{,} \PY{l+m+mf}{50.}\PY{p}{]}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{time}
+\PY{n}{tic} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{perf\PYZus{}counter}\PY{p}{(}\PY{p}{)}
+\PY{n}{toc} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{perf\PYZus{}counter}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Calculate the U\PYZhy{}238 decay chain grid values:}
+\PY{n}{act} \PY{o}{=} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{solve\PYZus{}grid}\PY{p}{(}\PY{n}{phi0}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{W0}\PY{p}{,} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{D\PYZus{}238}\PY{p}{,} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{lambdas\PYZus{}238}\PY{p}{,} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{alphas\PYZus{}238}\PY{p}{)}
+\PY{n}{Th} \PY{o}{=} \PY{n}{act}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{Ra} \PY{o}{=} \PY{n}{act}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{Th}\PY{p}{)}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{Ra}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+W = 0.5 . . . .
+W = 1.0 . . . .
+W = 2.0 . . . .
+W = 5.0 . . . .
+W = 10.0 . . . .
+W = 20.0 . . . .
+W = 50.0 . . . .
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Calculate the U\PYZhy{}235 decay chain grid values:}
+\PY{n}{act\PYZus{}235} \PY{o}{=} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{solve\PYZus{}grid}\PY{p}{(}\PY{n}{phi0}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{W0}\PY{p}{,} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{D\PYZus{}235}\PY{p}{,} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{lambdas\PYZus{}235}\PY{p}{,} \PY{n}{us\PYZus{}eq}\PY{o}{.}\PY{n}{alphas\PYZus{}235}\PY{p}{)}
+\PY{n}{Pa} \PY{o}{=} \PY{n}{act\PYZus{}235}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{Pa}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+W = 0.5 . . . .
+W = 1.0 . . . .
+W = 2.0 . . . .
+W = 5.0 . . . .
+W = 10.0 . . . .
+W = 20.0 . . . .
+W = 50.0 . . . .
+    \end{Verbatim}
+
+The figures below illustrate the batch model results in a variety of ways. First, each isotopic activity ratio is contoured in $\phi_0$ vs. $W_0$ space (Figure 10), and then outcomes for $W_0$ and $\phi_0$ values are contoured as mesh "grids" in activity ratio-activity ratio plots (Figure 11).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}contours}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{act}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_88_0.png}
+    \end{center}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}contours}\PY{p}{(}\PY{n}{phi0}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{act\PYZus{}235}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_89_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 10.} Diagrams of upwelling rate ($W_0$) vs. maximum residual melt porosity ($\phi$) showing contoured activity ratios for ($^{230}$Th/$^{238}$U) (top panel), ($^{226}$Ra/$^{230}$Th) (middle panel), and ($^{231}$Pa/$^{235}$U) (bottom panel).
+
+\bigskip
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}mesh\PYZus{}Ra}\PY{p}{(}\PY{n}{Th}\PY{p}{,}\PY{n}{Ra}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{phi0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.5\paperheight}}{output_91_0.png}
+    \end{center}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{UserCalc}\PY{o}{.}\PY{n}{plot\PYZus{}mesh\PYZus{}Pa}\PY{p}{(}\PY{n}{Th}\PY{p}{,}\PY{n}{Pa}\PY{p}{,}\PY{n}{W0}\PY{p}{,}\PY{n}{phi0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.5\paperheight}}{output_92_0.png}
+    \end{center}
+    
+\hangindent=2em
+\hangafter=0
+    \textbf{Figure 11.} Diagrams showing ($^{226}$Ra/$^{230}$Th) vs. ($^{230}$Th/$^{238}$U) (top) and ($^{231}$Pa/$^{235}$U) vs. ($^{230}$Th/$^{238}$U) (bottom) for the gridded upwelling rate ($W_0$) and maximum residual porosity ($\phi$) values defined above.
+
+\bigskip
+
+    \hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+We present pyUserCalc, an expanded, publicly available, open-source version of the UserCalc code for determining U-series disequilibria generated in basalts by one-dimensional, decompression partial melting. The model has been developed from conservation of mass equations with two-phase (solid and liquid) porous flow and permeability governed by Darcy's Law. The model reproduces the functionality of the original UserCalc equilibrium porous flow calculator (Spiegelman, 2000) in pure Python code, and implements a new disequilibrium transport model. The disequilibrium transport code includes reactivity rate-limited chemical equilibration calculations controlled by a Damköhler number, $Da$. For stable elements with decay constants equal to zero, the equilibrium model reduces to batch melting and the disequilibrium transport model with $Da$ = 0 to pure fractional melting. The method presented here can be extended to other applications in geochemical porous flow calculations in future work.
+
+    \hypertarget{acknowledgments}{%
+\section*{Acknowledgments}\label{acknowledgments}}
+
+We thank K.W.W. Sims and P. Kelemen for initiating early discussions about creating a new porous flow disequilibrium transport calculator back in 2008. We also thank M. Ghiorso for inviting L. Elkins to join the ENKI working group and thereby catalyzing this fresh effort, and we further thank the working group for their helpful suggestions and feedback. L. Elkins received ENKI working group travel assistance that contributed to this research effort, and was supported by NSF award OCE-1658011.
+
+    \hypertarget{references}{%
+\section*{References}\label{references}}
+
+    Aharonov, E., J. A. Whitehead, P. Kelemen, and M. Spiegelman (1995),
+Channeling instability of upwelling melt in the mantle, \emph{Journal of
+Geophysical Research: Solid Earth,} \textbf{100}(B10), 20433-20450.
+
+Bourdon, B., S. P. Turner, and N. M. Ribe (2005), Partial melting and
+upwelling rates beneath the Azores from a U-series isotope perspective,
+\emph{Earth and Planetary Science Letters,} \textbf{239}, 42-56.
+
+Elkins, L. J., B. Bourdon, and S. Lambart (2019), Testing pyroxenite
+versus peridottie sources for marine basalts using U-series isotopes,
+\emph{Lithos,} \textbf{332-333}, 226-244, doi:
+210.1016/j.lithos.2019.1002.1011.
+
+Feineman, M. D., and D. J. DePaolo (2003), Steady-state 226Ra/230Th
+disequilibrium in mantle minerals: implications for melt transport rates
+in island arcs, \emph{Earth and Planetary Science Letters,}
+\textbf{215}(3-4), 339-355.
+
+Grose, C. J., and J. C. Afonso (2019), Chemical disequilibria,
+lithospheric thickness, and the source of ocean island basalts,
+\emph{Journal of Petrology,} \textbf{60}(4), 755-790.
+
+Iwamori, H. (1993), Dynamic disequilibrium melting model with porous
+flow and diffusion-controlled chemical equilibration, \emph{Earth and
+Planetary Science Letters,} \textbf{114}(2-3), 301-313.
+
+Iwamori, H. (1994), 238U-230Th-226Ra and 235U-231Pa disequilibria
+produced by mantle melting with porous and channel flows, \emph{Earth
+and Planetary Science Letters,} \textbf{125}, 1-16.
+
+Jull, M., P. Kelemen, and K. Sims (2002), Consequences of diffuse and
+channelled porous melt migration on uranium series disequilibria.,
+\emph{Geochimica Et Cosmochimica Acta,} \textbf{66}, 4133-4148.
+
+Kogiso, T., M. M. Hirschmann, and P. W. Reiners (2004), Length scales of
+mantle heterogeneities and their relationship to ocean island basalt
+geochemistry, \emph{Geochimica et Cosmochimica Acta,} \textbf{68}(2),
+345-360.
+
+Liang, Y., and B. Liu (2016), Simple models for disequilibrium
+fractional melting and batch melting with application to REE
+fractionation in abyssal peridotites, \emph{Geochimica et Cosmochimica
+Acta,} \textbf{173}, 181-197.
+
+Lundstrom, C., J. Gill, and Q. Williams (2000), A geochemically
+consistent hypothesis for MORB generation, \emph{Chemical Geology,}
+\textbf{162}(2), 105-126.
+
+McKenzie, D. (1985), Th-230-U-238 Disequilibrium and the Melting
+Processes beneath Ridge Axes, \emph{Earth and Planetary Science
+Letters,} \textbf{72}(2-3), 149-157.
+
+Oliveira, B., J. C. Afonso, and R. Tilhac (2020), A disequilibrium
+reactive transport model for mantle magmatism, \emph{Journal of
+Petrology,} https://doi.org/10.1093/petrology/egaa1067.
+
+Peate, D. W., and C. J. Hawkesworth (2005), U series disequilibria:
+insights into mantle melting and the timescales of magma
+differentiation, \emph{Reviews of Geophysics,} \textbf{43}(1).
+
+Qin, Z., F. Lu, and A. T. Anderson (1992), Diffusive reequilibration of
+melt and fluid inclusions, \emph{American Mineralogist,}
+\textbf{77}(5-6), 565-576.
+
+Shaw, D. M. (1970), Trace element fractionation during anatexis,
+Geochimica et Cosmochimica Acta, 34(2), 237-243.
+
+Sims, K. W. W., D. J. DePaolo, M. T. Murrell, W. S. Baldridge, S.
+Goldstein, D. Clague, and M. Jull (1999), Porosity of the melting zone
+and variations in the solid mantle upwelling rate beneath Hawaii:
+Inferences from U-238-Th-230-Ra-226 and U-235-Pa-231 disequilibria,
+\emph{Geochimica Et Cosmochimica Acta,} \textbf{63}(23-24), 4119-4138.
+
+Sims, K. W. W., et al. (2002), Chemical and isotopic constraints on the
+generation and transport of magma beneath the East Pacific Rise,
+\emph{Geochimica Et Cosmochimica Acta,} \textbf{66}(19), 3481-3504.
+
+Spiegelman, M. (2000), UserCalc: a web-based uranium series calculator
+for magma migration problems, \emph{Geochemistry Geophysics Geosystems,}
+\textbf{1}(8), 1016.
+
+Spiegelman, M., and P. Kenyon (1992), The requirements for chemical
+disequilibrium during magma migration, \emph{Earth and Planetary Science
+Letters,} \textbf{109}(3-4), 611-620.
+
+Spiegelman, M., and T. Elliott (1993), Consequences of Melt Transport
+for Uranium Series Disequilibrium in Young Lavas, \emph{Earth and
+Planetary Science Letters,} \textbf{118}(1-4), 1-20.
+
+Stracke, A., and B. Bourdon (2009), The importance of melt extraction
+for tracing mantle heterogeneities, \emph{Geochimica Et Cosmochimica
+Acta,} \textbf{73}, 218-238.
+
+Stracke, A., A. Zindler, V. J. M. Salters, D. McKenzie, and K. Gronvold
+(2003), The dynamics of melting beneath Theistareykir, northern Iceland,
+\emph{Geochemistry Geophysics Geosystems,} \textbf{4}, 8513.
+
+Van Orman, J. A., T. L. Grove, and N. Shimizu (2002a), Diffusive
+fractionation of trace elements during production and transport of
+melting in the earth's upper mantle, \emph{Earth and Planetary Science
+Letters,} \textbf{198}, 93-112.
+
+Van Orman, J. A., A. E. Saal, B. Bourdon, and E. H. Hauri (2006),
+Diffusive fractionation of U-series radionuclides during mantle melting
+and shallow-level melt--cumulate interaction, \emph{Geochimica et
+Cosmochimica Acta,} \textbf{70}(18), 4797-4812.
+
+Zou, H., and A. Zindler (2000), Theoretical studies of 238U-230Th-226Ra
+and 235U-231Pa disequilibria in young lavas produced by mantle melting,
+\emph{Geochimica et Cosmochimica Acta,} \textbf{64}(10), 1809-1817.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
