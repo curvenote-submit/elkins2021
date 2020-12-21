@@ -10,7 +10,7 @@ in basalts during decompression partial melting.
 * `UserCalc.py`:  python file containing the UserCalc driver and model classes as well as some convenience visualization methods.  Imported in the notebooks
 *  `data`: directory containing input .csv files
 
-####Additional materials
+#### Additional materials
 -
 * `pyUserCalc-v3.1.ipynb`: Simplified version of the manuscript notebook intended for production work with the model.
 * `latex`: directory containing latex version and formatted pdf of the manuscript notebook for publication
