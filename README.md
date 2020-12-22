@@ -22,9 +22,11 @@ Instructions:
 
 * Log in to the  [ENKI cloud server](https://server.enki-portal.org/hub/login) (you will need a gitlab account)
 * click "Close this Screen" button at the bottom of the welcome screen
-* select the GitLab tab on the far left of the window. This will display a list of repositories under the enki-portal project
-* Select pyUserCalc
-* Open `pyUserCalc_manuscript.ipynb`
+* Launch a terminal from the Launcher
+* Clone the repository to your server
+`git clone https://gitlab.com/ENKI-portal/pyUsercalc.git`
+* navigate to the `pyUserCalc` directory and open `pyUserCalc_manuscript.ipynb`
+
 
 
 #### Binder
