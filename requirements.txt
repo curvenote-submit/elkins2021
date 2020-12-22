@@ -1,0 +1,8 @@
+#
+# This file lists all the external python packages required by pyUserCalc
+
+matplotlib
+numpy
+pandas
+time
+

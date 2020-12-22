@@ -14,3 +14,32 @@ in basalts during decompression partial melting.
 
 * `pyUserCalc-v3.1.ipynb`: Simplified version of the manuscript notebook intended for production work with the model.
 * `latex`: directory containing latex version and formatted pdf of the manuscript notebook for publication
+
+## Installation/Running
+
+#### ENKI Cloud Server:
+Instructions:
+
+* Log in to the  [ENKI cloud server](https://server.enki-portal.org/hub/login) (you will need a gitlab account)
+* click "Close this Screen" button at the bottom of the welcome screen
+* select the GitLab tab on the far left of the window. This will display a list of repositories under the enki-portal project
+* Select pyUserCalc
+* Open `pyUserCalc_manuscript.ipynb`
+
+
+#### Binder
+
+
+You can also interact with the notebook through a binder container. Click the button below
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gl/ENKI-portal%2FpyUsercalc/master?filepath=pyUserCalc_manuscript.ipynb)
+
+and a container will be built to run the manuscript notebook through your browser.  This may take some time to start however.
+
+
+#### Local Install
+
+This repository should run with a standard Jupyter installation e.g. through Anaconda (python3).  Just clone the repository and open in jupyter-lab. 
+
+
+
