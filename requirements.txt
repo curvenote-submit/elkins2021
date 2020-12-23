@@ -5,6 +5,5 @@ matplotlib
 numpy
 pandas
 scipy
-time
 os
 shutil
