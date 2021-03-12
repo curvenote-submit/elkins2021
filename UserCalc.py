@@ -4,6 +4,7 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import brentq
 from scipy.interpolate import interp1d, pchip
 
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
@@ -517,7 +518,7 @@ class UserCalc:
 
         df = pd.DataFrame()
         df['P'] = self.P(z)
-        df['z'] = self.zmax - self.h*z
+        df['depth'] = self.zmax - self.h*z
         df['F'] = self.F(z)
         df['phi'] = self.phi(z)
         names = ['(230Th/238U)','(226Ra/230Th)']
@@ -676,7 +677,7 @@ def plot_1Dcolumn(df,figsize=(8,6),show_grids=False):
     ax2.legend(loc='best',bbox_to_anchor=(1.1,1))
     return fig,(ax1,ax1a,ax2)
 
-def plot_contours(phi0,W0,act,figsize=(12,12)):
+def plot_contours(phi0,W0,act,figsize=(8,10)):
     '''
     pretty plot activity contour plots
     '''
@@ -698,7 +699,7 @@ def plot_contours(phi0,W0,act,figsize=(12,12)):
         plt.title(labels[0])
         plt.colorbar(cf, ax=plt.gca(), orientation='horizontal',shrink=1.)
     else:
-        fig, axes = plt.subplots(Nplots,1,sharey=True,figsize=(10,24))
+        fig, axes = plt.subplots(1,Nplots,sharey=True,figsize=(2*figsize[0],figsize[1]))
         for i,ax in enumerate(axes):
             cf = ax.contourf(phi0,W0,act[i])
             ax.set_xscale('log')
@@ -709,7 +710,7 @@ def plot_contours(phi0,W0,act,figsize=(12,12)):
             ax.set_title(labels[i])
             fig.colorbar(cf, ax=ax, orientation='horizontal',shrink=1.)
 
-def plot_mesh_Ra(Th,Ra,W0,phi0,figsize=(12,12)):
+def plot_mesh_Ra(Th,Ra,W0,phi0,figsize=(10,12)):
     '''
     activity mesh plot for Ra vs. Th, from gridded data
     '''
@@ -745,3 +746,140 @@ def plot_mesh_Pa(Th,Pa,W0,phi0,figsize=(12,12)):
     plt.ylabel('($^{231}$Pa/$^{230}$Th)')
 
     #plt.show()
+
+#---------------------------------------
+# Utility functions for calculating smoothed steps and ramps and the two-layer input generator
+
+from collections import OrderedDict
+
+def _step(x, x_0, x_lambda, f):
+    """ function to return smoothed step function between values f_min and f_max
+    
+        f_min + (f_max - f_min)*H((x-x0)/x_lambda)
+        
+        where H(x) is a smoothed Heaviside function 
+        
+        Parameters:
+        -----------
+        
+        x: array
+            numpy array of locations x
+        x_0: float
+            location of step
+        x_lambda: float
+            smoothing lengthscale
+        f:  array [f_min f_max]
+            critical values in step function
+            f_min value of step at x[0]
+            f_max value of step at x[1]
+            
+    """
+    return f[0] + (f[1] - f[0])*0.5*(np.tanh((x - x_0)/x_lambda) + 1)
+
+def _ramp(x, x_0, x_lambda, f ):
+    """ function to return smoothed broken ramp function  between values f_min, f_0 and f_max
+    
+        This function is just the integral of step(x, df1, df2, x_0, x_lambda) with values given by the slopes between 
+        
+            df1 = (f_0 - f_min)/(x_0 - x_min)
+            df2 = (f_max - f_0)/(x_max - x_0)
+        
+        Parameters:
+        -----------
+        
+        x: array
+            numpy array of locations x
+        x_0: float
+            location of step
+        x_lambda: float
+            smoothing lengthscale
+        f: array [f_min f_0 f_max ]
+            critical values in ramp function
+            f_min value of ramp at x[0]
+            f_0 value ramp at x_0
+            f_max value of ramp at x[-1]
+        
+            
+    """
+    # set slopes of the two segments of the ramp far from the inflection point
+    df1 = (f[1] - f[0])/(x_0 - x[0])
+    df2 = (f[-1] - f[1])/(x[-1] - x_0)
+    
+    # calculate the scaled difference from the inflection point
+    x_scaled = (x-x_0)/x_lambda
+    
+    # find all points > xscaled = -10
+    indx = x_scaled >= -10
+    istart =  np.where(indx)[0][0]
+    
+    # smoothed heaviside function
+    H = (np.tanh(x_scaled) + 1.)/2.
+    
+    # initialized bottom part of ramp
+    ramp = f[0] + df1*x
+    # calculate integral of step function for x_scaled > -10
+    intdf = df1*x[indx] + (df2 - df1)*(x[indx] - 0.5*x_lambda*np.log(H[indx])) 
+    # patch up ramp function
+    ramp[indx]  = ramp[istart] - intdf[0] + intdf
+    return ramp 
+
+def twolayermodel(P, F, Kr, D_lower, D_upper,  N=100, P_lambda = 1,):
+    """ create a pandas dataframe for the UserCalc sample two-layer model defined by a column that spans pressures from
+        P_bottom to P_top with a possible change in layer properties at pressure P_boundary that is smoothed over a pressure range given by P_lambda
+        
+        Each layer can have its own bulk partition coefficient D, relative permeability Kr. 
+        
+        The degree of melting is given by a smoothed ramp function defined by three values of F, F(P_bottom), F(P_boundary) and F(P_top)
+        
+        Parameters:
+        -----------
+        
+        P: array [ P_bottom, P_boundary, P_top ]
+            pressure bounds in the column (assumed kb) 
+            P[0] = P_bottom is the pressure at the bottom of the column
+            P[1] = P_boundary is the pressure at the layer boundaries
+            P[2] = P_top is the pressure at the top of the column
+        F: array [ F_bottom, F_boundary, F_top]
+            Degree of melting at the bottom, layer boundary and top of the column
+        D_lower:  array [ D_U, D_Th, D_Ra, D_Pa ]
+            bulk partition coefficients for U-series nuclides in the bottom layer
+        D_upper:  array [ D_U, D_Th, D_Ra, D_Pa ]
+            bulk partition coefficients for U-series nuclides in the upper layer
+        Kr: array [ Kr_lower,  Kr_upper]
+            relative permeability of lower and upper layers (controls step function)
+        N: int
+            Number of rows in dataframe
+        P_lambda: float
+            Pressure smoothing parameter.  Controls the width of  Smooth steps and ramps between layers (defaults to 1kb)
+            
+        Returns:
+        --------
+        
+        df: pandas dataframe
+            with columns P, F, Kr, DU, DTh, DRa, DPa
+        
+    """
+    # basic check on array lengths
+    assert(len(P) == 3)
+    assert(len(F) == 3)
+    assert(len(Kr) == 2)
+    assert(len(D_lower) == 4)
+    assert(len(D_lower) == len(D_upper))    
+    
+    # construct pressure array and reordered pressure array
+    P_array = np.linspace(P[0], P[-1], N)
+    x = P_array[0] - P_array
+    x_0 = P_array[0] - P[1]
+    
+    Ds = list(zip(D_lower, D_upper))
+    D_labels = [ 'DU', 'DTh', 'DRa', 'DPa' ]
+        
+    _dict = OrderedDict()
+    _dict['P'] = P_array
+    _dict['F'] = _ramp(x, x_0, P_lambda, F)
+    _dict['Kr'] = _step(x, x_0, P_lambda, Kr)
+    for i,D in enumerate(Ds):
+        _dict[D_labels[i]] = _step(x, x_0, P_lambda, D)
+        
+    return pd.DataFrame.from_dict(_dict)
+        
