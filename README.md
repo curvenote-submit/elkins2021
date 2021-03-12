@@ -6,14 +6,15 @@ in basalts during decompression partial melting.
 
 ## Contents
 
-* `pyUserCalc_manuscript.ipynb`: Primary Elkins and Spiegelman (submitted) manuscript notebook describing derivations, model implementation, and multiple examples for running the U-series calculators.
+* `pyUserCalc_manuscript.ipynb`: Primary Elkins and Spiegelman (2021) manuscript notebook describing derivations, model implementation, and multiple examples for running the U-series calculators.
 * `UserCalc.py`:  Python file containing the UserCalc driver and model classes as well as some convenient visualization methods, and which is imported in the model notebooks.
 *  `data`: Directory containing input .csv files. These files are necessary for the primary notebook to run, and can also be used as templates for additional model use.
 
 #### Additional materials
 
-* `pyUserCalc-v3.1.ipynb`: Simplified version of the primary Elkins and Spiegelman (submitted) pyUserCalc notebook, intended for production work with the model.
-* `latex`: Directory containing LaTeX version and formatted PDF of the Elkins and Spiegelman (submitted) manuscript for publication.
+* `pyUserCalc-v3.1.ipynb`: Simplified version of the primary Elkins and Spiegelman (2021) pyUserCalc notebook, intended for production work with the model.
+* `twolayermodel.ipynb`: Notebook containing calculator tool to generate two-layer input files.
+* `latex`: Directory containing LaTeX version and formatted PDF of the Elkins and Spiegelman (2021) manuscript for publication.
 
 ## Installation/Running
 
