@@ -615,9 +615,9 @@ def plot_inputs(df,figsize=(8,6),show_grids=True):
     '''
 
     fig, (ax1, ax2, ax3) = plt.subplots(1,3, sharey=True,figsize=figsize)
-    ax1.plot(df['F'],df['P'])
+    ax1.plot(df['F']*100,df['P'])
     ax1.invert_yaxis()
-    ax1.set_xlabel('F')
+    ax1.set_xlabel('F (%)')
     ax1.set_ylabel('Pressure (kbar)')
     xticks = np.linspace(0,max(df['F']),10)
     if show_grids:
@@ -655,16 +655,16 @@ def plot_1Dcolumn(df,figsize=(8,6),show_grids=False):
     '''
 
     fig, (ax1, ax2) = plt.subplots(1,2, sharey=True,figsize=figsize)
-    ax1.plot(df['phi'],df['P'],'r',label='$\phi$')
-    ax1.set_xlabel('Porosity',color='r')
+    ax1.plot(df['phi']*100,df['P'],'r',label='$\phi$')
+    ax1.set_xlabel('Porosity (%)',color='r')
     ax1.set_ylabel('Pressure (kbar)')
     ax1.invert_yaxis()
     if show_grids:
         ax1.grid(color='r')
 
     ax1a = ax1.twiny()
-    ax1a.plot(df['F'],df['P'],'b',label='$F$')
-    ax1a.set_xlabel('Degree of melting',color='b')
+    ax1a.plot(df['F']*100,df['P'],'b',label='$F$')
+    ax1a.set_xlabel('Degree of melting (%)',color='b')
     if show_grids:
         ax1a.grid(color='b')
 
@@ -719,7 +719,7 @@ def plot_mesh_Ra(Th,Ra,W0,phi0,figsize=(10,12)):
     for m in range(mW):
         plt.plot(Th[m],Ra[m],label='W = {} cm/yr'.format(W0[m]))
     for n in range(nphi):
-        plt.plot(Th.T[n],Ra.T[n],label='$\phi$ = {}'.format(phi0[n]))
+        plt.plot(Th.T[n],Ra.T[n],'--',label='$\phi$ = {}'.format(phi0[n]))
 
     plt.legend(loc='upper left',bbox_to_anchor=(0,-0.3))
     plt.axis([0.9,2.0,0.7,10.0])
@@ -737,7 +737,7 @@ def plot_mesh_Pa(Th,Pa,W0,phi0,figsize=(12,12)):
     for m in range(mW):
         plt.plot(Th[m],Pa[m],label='W = {} cm/yr'.format(W0[m]))
     for n in range(nphi):
-        plt.plot(Th.T[n],Pa.T[n],label='$\phi$ = {}'.format(phi0[n]))
+        plt.plot(Th.T[n],Pa.T[n],'--',label='$\phi$ = {}'.format(phi0[n]))
 
     plt.legend(loc='upper left',bbox_to_anchor=(0,-0.3))
     plt.axis([0.9,2.0,0.7,10.0])
