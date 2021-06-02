@@ -689,26 +689,33 @@ def plot_contours(phi0,W0,act,figsize=(8,10)):
         labels = ['$(^{231}Pa/^{235}U)$']
 
     if Nplots == 1:
-        plt.figure(figsize=figsize)
-        cf = plt.contourf(phi0,W0,act[0])
-        plt.xscale('log')
-        plt.yscale('log')
-        plt.xlabel('Porosity ($\phi$)')
-        plt.ylabel('Upwelling Rate (cm/yr)')
-        plt.gca().set_aspect('auto')
-        plt.title(labels[0])
-        plt.colorbar(cf, ax=plt.gca(), orientation='horizontal',shrink=1.)
+        fig =  plt.figure(figsize=figsize)
+        ax =  fig.add_subplot(1,1,1)
+        cf = plt.contourf(phi0*100,W0,act[0])
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.set_xlabel('Porosity (%)')
+        ax.set_ylabel('Upwelling Rate (cm/yr)')
+        ax.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
+        ax.xaxis.set_minor_formatter(mpl.ticker.NullFormatter())
+        ax.set_title(labels[0])
+        fig.colorbar(cf, ax=ax, orientation='horizontal',shrink=1.)
     else:
         fig, axes = plt.subplots(1,Nplots,sharey=True,figsize=(2*figsize[0],figsize[1]))
         for i,ax in enumerate(axes):
-            cf = ax.contourf(phi0,W0,act[i])
+            cf = ax.contourf(phi0*100,W0,act[i])
             ax.set_xscale('log')
             ax.set_yscale('log')
             ax.set_aspect('auto')
-            ax.set_xlabel('Porosity ($\phi$)')
+            ax.set_xlabel('Porosity (%)')
             ax.set_ylabel('Upwelling Rate (cm/yr)')
+            ax.xaxis.set_major_locator(mpl.ticker.LogLocator())
+            ax.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
+            ax.xaxis.set_minor_formatter(mpl.ticker.NullFormatter())
             ax.set_title(labels[i])
             fig.colorbar(cf, ax=ax, orientation='horizontal',shrink=1.)
+            
+    
 
 def plot_mesh_Ra(Th,Ra,W0,phi0,figsize=(10,12)):
     '''
