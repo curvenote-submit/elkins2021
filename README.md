@@ -14,7 +14,7 @@ in basalts during decompression partial melting.
 
 * `pyUserCalc-v3.1.ipynb`: Simplified version of the primary Elkins and Spiegelman (2021) pyUserCalc notebook, intended for production work with the model.
 * `twolayermodel.ipynb`: Notebook containing calculator tool to generate two-layer input files.
-* `latex`: Directory containing LaTeX version and formatted PDF of the Elkins and Spiegelman (2021) manuscript for publication.
+* `latex`: Directory containing LaTeX version and formatted PDF of the Elkins and Spiegelman (2021) manuscript for publication (accepted version).
 
 ## Installation/Running
 
