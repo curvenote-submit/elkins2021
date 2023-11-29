@@ -36,6 +36,7 @@ project:
   doi: https://doi.org/10.1029/2020EA001619
   abbreviations:
     ODE: ordinary differential equation
+    NSF: National Science Foundation
 site:
   template: article-theme
   # title:
