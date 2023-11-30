@@ -26,11 +26,8 @@ project:
   # github:
   # bibliography: []
   numbering:
-    heading_1: true
-    heading_2: true
-    heading_3: true
-    heading_4: true
-    heading_5: true
+    headings: true
+    list: true
   banner: banner.png
   date: 2021/10/01
   doi: https://doi.org/10.1029/2020EA001619
