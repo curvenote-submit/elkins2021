@@ -1,0 +1,45 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  title: 'pyUserCalc: A Revised Jupyter Notebook Calculator for Uranium-Series Disequilibria in Basalts'
+  subject: Original Research
+  venue: Earth and Space Science
+  biblio:
+    volume: 8
+    issue: 12
+  license: CC-BY-NC-4.0
+  open_access: true
+  keywords:
+    - U-series
+    - basalt
+    - melting
+    - modeling
+    - porous flow
+  authors:
+    - name: Lynne J. Elkins
+      email: lelkins@unl.edu
+      orcid: 0000-0002-0903-7091
+      affiliation: University of Nebraska-Lincoln, Lincoln, NE, USA
+    - name: Marc Spiegelman
+      orcid: 0000-0002-5218-7466
+      affiliation: Lamont-Doherty Earth Observatory of Columbia University, Palisades, NY, USA
+  # github:
+  # bibliography: []
+  numbering:
+    headings: true
+    list: true
+  banner: banner.png
+  date: 2021/10/01
+  doi: https://doi.org/10.1029/2020EA001619
+  abbreviations:
+    ODE: ordinary differential equation
+    NSF: National Science Foundation
+site:
+  template: article-theme
+  # title:
+  # logo:
+  nav: []
+  actions:
+    - title: Learn More
+      url: https://mystmd.org/guide
+  domains: []
