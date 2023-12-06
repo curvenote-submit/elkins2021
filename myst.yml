@@ -34,6 +34,23 @@ project:
   abbreviations:
     ODE: ordinary differential equation
     NSF: National Science Foundation
+  exports:
+    - format: pdf
+      article: pyUserCalc_manuscript.ipynb
+      output: article.pdf
+      template: agu2019
+    - format: tex
+      article: pyUserCalc_manuscript.ipynb
+      output: tex.zip
+      template: agu2019
+    - format: meca
+      article: pyUserCalc_manuscript.ipynb
+      output: meca.zip
+  jupyter: true
+  requirements:
+    - requirements.txt
+  resources:
+    - data/**/*
 site:
   template: article-theme
   # title:
