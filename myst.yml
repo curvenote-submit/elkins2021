@@ -2,7 +2,7 @@
 version: 1
 project:
   title: 'pyUserCalc: A Revised Jupyter Notebook Calculator for Uranium-Series Disequilibria in Basalts'
-  subject: Original Research
+  subject: Research Article
   venue: Earth and Space Science
   biblio:
     volume: 8
