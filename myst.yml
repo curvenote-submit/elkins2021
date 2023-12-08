@@ -29,6 +29,7 @@ project:
     headings: true
     list: true
   banner: banner.png
+  thumbnail: thumbnail.png
   date: 2021/10/01
   doi: https://doi.org/10.1029/2020EA001619
   abbreviations:
