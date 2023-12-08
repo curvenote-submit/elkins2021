@@ -20,3 +20,4 @@ root: pyUserCalc_manuscript
 chapters:
   - file: pyUserCalc-v3.1
   - file: twolayermodel
+  - file: explore
