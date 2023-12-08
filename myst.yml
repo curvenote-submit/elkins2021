@@ -52,6 +52,7 @@ project:
     - requirements.txt
   resources:
     - data/**/*
+    - UserCalc.py
 site:
   template: article-theme
   # title:
